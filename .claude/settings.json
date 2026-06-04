@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | { read -r f; case \"$f\" in *index.html) cd /Users/zzuyou/Documents/Emotips && netlify deploy --prod --dir . ;; esac; } 2>/dev/null || true",
+            "statusMessage": "Deploying to Netlify..."
+          }
+        ]
+      }
+    ]
+  }
+}
