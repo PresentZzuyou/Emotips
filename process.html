@@ -768,13 +768,6 @@ body {
       <div class="step-desc">선택한 키워드를 보면서 이모티콘을 쓸 사람을 디테일하게 만들어보세요.<br>그 사람에게 딱 맞는 한 줄 제목까지 만든 뒤, 둘이 잘 어울리는지 점검해요.</div>
     </div>
 
-    <div style="margin-bottom:20px;">
-      <div style="font-size:12px; font-weight:700; color:var(--sub); margin-bottom:8px;">선택된 키워드</div>
-      <div class="keyword-chips" id="selectedKeywordsDisplay">
-        <span class="chip-empty">STEP 3에서 키워드를 선택해주세요</span>
-      </div>
-    </div>
-
     <div class="substep-divider">
       <div class="substep-num">1</div>
       <div>
@@ -800,6 +793,13 @@ body {
           <div class="persona-row"><span class="persona-label">자주하는 카톡 대화</span><span class="persona-value">라이딩에 대한 내용. 라이딩 모임에서 같이 탈 사람을 구하거나 자전거 정보 교류, 날씨 등</span></div>
           <div class="persona-row"><span class="persona-label">이모티콘을 쓰는 이유</span><span class="persona-value">텍스트 타이핑이 귀찮아서</span></div>
         </div>
+      </div>
+    </div>
+
+    <div style="margin: -8px 0 20px;">
+      <div style="font-size:12px; font-weight:700; color:var(--sub); margin-bottom:8px;">선택된 키워드</div>
+      <div class="keyword-chips" id="selectedKeywordsDisplay">
+        <span class="chip-empty">STEP 3에서 키워드를 선택해주세요</span>
       </div>
     </div>
 
@@ -840,16 +840,6 @@ body {
       <textarea class="form-textarea" id="p6" placeholder="예) 감정 표현이 서툴러서 이모티콘으로 대신 전달하는 편. 특히 퇴근 후 지친 감정을 표현할 때 자주 씀."></textarea>
     </div>
 
-    <div class="persona-example live">
-      <strong>👀 내가 만든 타겟 페르소나 미리보기</strong>
-      <div class="persona-card">
-        <div class="persona-silhouette">
-          <img alt="성별이 드러나지 않은 사람 실루엣" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' rx='28' fill='%23f2f8ff'/%3E%3Ccircle cx='80' cy='55' r='30' fill='%23b9d8f4'/%3E%3Cpath d='M32 137c4-35 27-55 48-55s44 20 48 55' fill='%238bb9e3'/%3E%3Cpath d='M49 137c6-22 22-34 31-34s25 12 31 34' fill='%23d8ecff' opacity='.7'/%3E%3C/svg%3E">
-        </div>
-        <div class="persona-details" id="personaPreviewDetails"></div>
-      </div>
-    </div>
-
     <div class="substep-divider">
       <div class="substep-num">2</div>
       <div>
@@ -871,9 +861,20 @@ body {
       <a class="guide-card-link" href="https://e.kakao.com/" target="_blank" style="display:inline-block; margin-top:12px; font-size:12px;">잘 모르겠다면 이모티콘 샵 둘러보기 →</a>
     </div>
 
-    <div class="form-group">
-      <label class="form-label" for="titleInput">나만의 한 줄 제목</label>
-      <input class="form-input" id="titleInput" type="text" placeholder="예) 칼퇴 꿈꾸는 직장인 고양이의 하루">
+    <div class="persona-example live">
+      <strong>👀 내 타겟 페르소나와 한 줄 제목</strong>
+      <div class="persona-card">
+        <div class="persona-silhouette">
+          <img alt="성별이 드러나지 않은 사람 실루엣" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' rx='28' fill='%23f2f8ff'/%3E%3Ccircle cx='80' cy='55' r='30' fill='%23b9d8f4'/%3E%3Cpath d='M32 137c4-35 27-55 48-55s44 20 48 55' fill='%238bb9e3'/%3E%3Cpath d='M49 137c6-22 22-34 31-34s25 12 31 34' fill='%23d8ecff' opacity='.7'/%3E%3C/svg%3E">
+        </div>
+        <div class="persona-details" id="personaPreviewDetails"></div>
+      </div>
+      <div class="persona-title-field">
+        <div class="form-group">
+          <label class="form-label" for="titleInput">나만의 한 줄 제목</label>
+          <input class="form-input" id="titleInput" type="text" placeholder="예) 칼퇴 꿈꾸는 직장인 고양이의 하루">
+        </div>
+      </div>
     </div>
 
     <div class="guide-card">
