@@ -1183,6 +1183,49 @@ function updateSelectedDisplay() {
   display.innerHTML = sel.map(k => `<div class="chip selected">${k}</div>`).join('');
 }
 
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function personaValue(id, fallback) {
+  const el = document.getElementById(id);
+  const value = el ? el.value.trim() : '';
+  if (!value) return `<span class="persona-value empty">${fallback}</span>`;
+  return `<span class="persona-value">${escapeHtml(value)}</span>`;
+}
+
+function updatePersonaPreview() {
+  const preview = document.getElementById('personaPreviewDetails');
+  if (!preview) return;
+
+  const rows = [
+    ['이름', personaValue('p1', '이름을 입력해주세요')],
+    ['성별', personaValue('p3', '성별을 입력해주세요')],
+    ['나이', personaValue('p2', '나이/연령대를 입력해주세요')],
+    ['직업', personaValue('p4', '직업을 입력해주세요')],
+    ['성격', personaValue('p5', '성격을 입력해주세요')],
+    ['관심사', personaValue('p8', '관심사를 입력해주세요')],
+    ['취미', personaValue('p9', '취미를 입력해주세요')],
+    ['자주하는 카톡 대화', personaValue('p7', '자주 하는 대화나 표현을 입력해주세요')],
+    ['이모티콘을 쓰는 이유', personaValue('p6', '이모티콘을 쓰는 이유를 입력해주세요')]
+  ];
+
+  preview.innerHTML = rows
+    .map(([label, value]) => `<div class="persona-row"><span class="persona-label">${label}</span>${value}</div>`)
+    .join('');
+}
+
+['p1','p2','p3','p4','p5','p6','p7','p8','p9'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updatePersonaPreview);
+});
+updatePersonaPreview();
+
 // ── 네비게이션 ──
 function goToStep(n) {
   document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
