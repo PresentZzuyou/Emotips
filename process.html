@@ -304,24 +304,36 @@ body {
   font-weight: 900;
 }
 .title-example-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 8px;
 }
 .title-example-list li {
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 11px 7px 24px;
+  border-radius: 12px;
+  padding: 10px 12px 10px 24px;
   line-height: 1.35;
 }
 .title-example-list li::before {
-  left: 11px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 12px;
+  top: 13px;
+}
+.title-example-name {
+  display: block;
+  font-size: 13px;
+  color: var(--dark);
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.title-example-target {
+  display: block;
+  font-size: 11px;
+  color: var(--sub);
+  font-weight: 600;
+  line-height: 1.45;
+  word-break: keep-all;
 }
 
 /* ── 페르소나 ── */
