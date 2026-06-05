@@ -1263,7 +1263,10 @@ function updatePersonaPreview() {
 
 ['p1','p2','p3','p4','p5','p6','p7','p8','p9'].forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', updatePersonaPreview);
+  if (!el) return;
+  ['input', 'change', 'keyup'].forEach(eventName => {
+    el.addEventListener(eventName, updatePersonaPreview);
+  });
 });
 updatePersonaPreview();
 
@@ -1271,6 +1274,7 @@ updatePersonaPreview();
 function goToStep(n) {
   document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
   document.querySelector(`[data-step="${n}"]`).classList.add('active');
+  if (n === 4) updatePersonaPreview();
 
   for (let i = 1; i <= TOTAL_STEPS; i++) {
     const dot = document.getElementById('dot' + i);
