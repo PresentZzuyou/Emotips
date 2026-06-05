@@ -667,12 +667,33 @@ body {
     </div>
   </div>
 
-  <!-- STEP 2: 키워드 추출 -->
+  <!-- STEP 2: 키워드 도출 -->
   <div class="step-section" data-step="2">
     <div class="step-header">
       <div class="step-num">STEP 02</div>
-      <div class="step-title">🏷️ 키워드 추출</div>
-      <div class="step-desc">나인드맵에서 수집된 키워드예요.<br>이모티콘 제목에 쓰고 싶은 키워드를 <strong>2~5개</strong> 선택해보세요.</div>
+      <div class="step-title">🏷️ 키워드 도출</div>
+      <div class="step-desc">나인드맵에서 꺼낸 키워드들을 한눈에 확인해보세요.<br>아직 고르는 단계가 아니라, 내가 어떤 재료를 가지고 있는지 살펴보는 단계예요.</div>
+    </div>
+    <div class="keyword-chips" id="keywordPreviewChips">
+      <span class="chip-empty">STEP 1을 먼저 작성해주세요 🙂</span>
+    </div>
+    <div class="example-box" style="margin-top:20px;">
+      <div class="example-box-title">💡 키워드를 볼 때 체크할 것</div>
+      <ul class="example-list">
+        <li>내가 잘 알고 오래 이야기할 수 있는 키워드인가?</li>
+        <li>카카오톡 대화에서 자주 쓰일 상황이 떠오르는가?</li>
+        <li>캐릭터 외형이나 성격으로 확장하기 쉬운가?</li>
+        <li>너무 넓거나 흔하면 더 구체적으로 좁힐 수 있는가?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STEP 3: 키워드 선택 -->
+  <div class="step-section" data-step="3">
+    <div class="step-header">
+      <div class="step-num">STEP 03</div>
+      <div class="step-title">✅ 키워드 선택</div>
+      <div class="step-desc">도출된 키워드 중 이모티콘의 중심이 될 키워드를 <strong>2~5개</strong> 선택해보세요.<br>선택한 키워드는 다음 단계에서 타겟 페르소나와 한 줄 제목을 만들 때 기준이 돼요.</div>
     </div>
     <div class="keyword-chips" id="keywordChips">
       <span class="chip-empty">STEP 1을 먼저 작성해주세요 🙂</span>
@@ -682,46 +703,19 @@ body {
     </div>
   </div>
 
-  <!-- STEP 3: 한 줄 제목 -->
-  <div class="step-section" data-step="3">
+  <!-- STEP 4: 타겟 페르소나 + 제목 확정 -->
+  <div class="step-section" data-step="4">
     <div class="step-header">
-      <div class="step-num">STEP 03</div>
-      <div class="step-title">✏️ 한 줄 제목 짓기</div>
-      <div class="step-desc">선택한 키워드를 조합해 이모티콘 제목을 지어보세요.<br>키워드를 전부 넣을 필요는 없어요. 자연스럽고 재치있는 제목이 좋아요!</div>
+      <div class="step-num">STEP 04</div>
+      <div class="step-title">🙋 타겟 페르소나와 제목 확정</div>
+      <div class="step-desc">선택한 키워드를 보면서 이모티콘을 쓸 사람을 디테일하게 만들어보세요.<br>마지막에는 한 줄 제목과 타겟 페르소나가 잘 어울리는지 점검한 뒤 확정해요.</div>
     </div>
 
     <div style="margin-bottom:20px;">
       <div style="font-size:12px; font-weight:700; color:var(--sub); margin-bottom:8px;">선택된 키워드</div>
       <div class="keyword-chips" id="selectedKeywordsDisplay">
-        <span class="chip-empty">STEP 2에서 키워드를 선택해주세요</span>
+        <span class="chip-empty">STEP 3에서 키워드를 선택해주세요</span>
       </div>
-    </div>
-
-    <div class="example-box">
-      <div class="example-box-title">📋 제목 예시 (참고용)</div>
-      <ul class="example-list">
-        <li>거친 세상을 살아가는 햄스터</li>
-        <li>오늘도 기분 좋아지는 톡</li>
-        <li>러블리 미니 다꾸템</li>
-        <li>아기 망그러진 곰</li>
-        <li>대학생활 극락쿼카</li>
-        <li>헬멧이의 오토바이 라이프</li>
-      </ul>
-      <a class="guide-card-link" href="https://e.kakao.com/" target="_blank" style="display:inline-block; margin-top:12px; font-size:12px;">잘 모르겠다면 이모티콘 샵 둘러보기 →</a>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="titleInput">나만의 한 줄 제목</label>
-      <input class="form-input" id="titleInput" type="text" placeholder="예) 칼퇴 꿈꾸는 직장인 고양이의 하루">
-    </div>
-  </div>
-
-  <!-- STEP 4: 타겟 페르소나 -->
-  <div class="step-section" data-step="4">
-    <div class="step-header">
-      <div class="step-num">STEP 04</div>
-      <div class="step-title">🙋 타겟 페르소나 만들기</div>
-      <div class="step-desc">내 이모티콘을 쓸 가상의 인물을 만들어보세요.<br>이 사람이 공감할 이모티콘을 만든다고 생각하면 방향이 잡혀요!</div>
     </div>
 
     <div class="persona-example">
@@ -779,6 +773,35 @@ body {
     <div class="form-group">
       <label class="form-label" for="p6">이모티콘을 쓰는 이유</label>
       <textarea class="form-textarea" id="p6" placeholder="예) 감정 표현이 서툴러서 이모티콘으로 대신 전달하는 편. 특히 퇴근 후 지친 감정을 표현할 때 자주 씀."></textarea>
+    </div>
+
+    <div class="example-box">
+      <div class="example-box-title">📋 제목 예시 (참고용)</div>
+      <ul class="example-list">
+        <li>거친 세상을 살아가는 햄스터</li>
+        <li>오늘도 기분 좋아지는 톡</li>
+        <li>러블리 미니 다꾸템</li>
+        <li>아기 망그러진 곰</li>
+        <li>대학생활 극락쿼카</li>
+        <li>헬멧이의 오토바이 라이프</li>
+      </ul>
+      <a class="guide-card-link" href="https://e.kakao.com/" target="_blank" style="display:inline-block; margin-top:12px; font-size:12px;">잘 모르겠다면 이모티콘 샵 둘러보기 →</a>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="titleInput">나만의 한 줄 제목</label>
+      <input class="form-input" id="titleInput" type="text" placeholder="예) 칼퇴 꿈꾸는 직장인 고양이의 하루">
+    </div>
+
+    <div class="guide-card">
+      <div class="guide-card-icon">🔍</div>
+      <div class="guide-card-title">제목과 페르소나 매칭 점검</div>
+      <div class="guide-card-desc">
+        ✅ 제목만 봐도 이 사람이 쓰고 싶을 이모티콘인지 확인하기<br>
+        ✅ 선택한 키워드가 페르소나의 직업, 관심사, 대화 내용에 자연스럽게 이어지는지 확인하기<br>
+        ✅ 페르소나가 실제 카톡에서 자주 할 말이 멘트 아이디어로 이어질 수 있는지 확인하기<br>
+        ✅ 제목이 너무 넓다면 페르소나 기준으로 더 구체적으로 좁히기
+      </div>
     </div>
   </div>
 
