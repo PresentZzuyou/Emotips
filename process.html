@@ -228,19 +228,40 @@ body {
 }
 
 /* ── 섹션 구분 ── */
-.section-divider {
+.substep-divider {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: start;
   margin: 28px 0 16px;
   padding-top: 22px;
   border-top: 1px solid var(--border);
 }
-.section-divider-title {
+.substep-divider:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.substep-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.substep-title {
   font-size: 17px;
   font-weight: 900;
   color: var(--dark);
   letter-spacing: -0.4px;
   margin-bottom: 6px;
 }
-.section-divider-desc {
+.substep-desc {
   font-size: 13px;
   color: var(--sub);
   line-height: 1.6;
