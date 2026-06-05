@@ -39,15 +39,23 @@ body {
   top: 0;
   z-index: 100;
 }
-.top-bar a {
-  font-size: 13px;
+.top-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: #fff;
   color: var(--sub);
-  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
 }
-.top-bar a:hover { color: var(--blue); }
+.top-nav-btn:hover { background: var(--gray); color: var(--dark); }
+.top-nav-btn:disabled { opacity: 0.25; cursor: default; }
 .top-bar-title {
   font-size: 14px;
   font-weight: 800;
@@ -179,6 +187,10 @@ body {
   transition: border-color 0.2s;
   resize: none;
   outline: none;
+}
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #c0c0c8;
 }
 .form-input:focus, .form-textarea:focus {
   border-color: var(--blue);
@@ -431,6 +443,11 @@ body {
   gap: 10px;
   max-width: 720px;
   margin: 0 auto;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.nav-bar.visible {
+  transform: translateY(0);
 }
 .btn-nav {
   flex: 1;
@@ -459,6 +476,38 @@ body {
   flex: 1.2;
 }
 .btn-pdf:hover { background: #c93c2e; }
+.btn-restart {
+  background: var(--gray);
+  color: var(--sub);
+  flex: 1;
+}
+.btn-restart:hover { background: #e8e8ee; }
+
+/* ── 플로팅 홈 버튼 ── */
+.fab-home {
+  position: fixed;
+  bottom: 84px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sub);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  transition: all 0.2s;
+  z-index: 200;
+  text-decoration: none;
+}
+.fab-home:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(11,139,255,0.25);
+}
 
 /* ── PDF 출력 ── */
 @media print {
@@ -484,9 +533,9 @@ body {
 
 <!-- 상단바 -->
 <div class="top-bar">
-  <a href="index.html">← 홈</a>
+  <button class="top-nav-btn" onclick="prevStep()" id="topBtnPrev">&#8592;</button>
   <div class="top-bar-title">이모티콘 제작 프로세스</div>
-  <div style="width:48px"></div>
+  <button class="top-nav-btn" onclick="nextStep()" id="topBtnNext">&#8594;</button>
 </div>
 
 <!-- 진행률 -->
@@ -495,7 +544,7 @@ body {
   <div class="progress-bar-bg">
     <div class="progress-bar-fill" id="progressFill" style="width:11%"></div>
   </div>
-  <div class="step-label-text" id="stepLabelText">STEP 1 / 9 · 나인드맵</div>
+  <div class="step-label-text" id="stepLabelText">STEP 1 / 9 · 나인드맵 <span style="color:var(--sub);">/ 숫자를 누르면 해당 단계로 이동해요</span></div>
 </div>
 
 <!-- 콘텐츠 -->
@@ -506,64 +555,64 @@ body {
     <div class="step-header">
       <div class="step-num">STEP 01</div>
       <div class="step-title">🧠 나인드맵</div>
-      <div class="step-desc">나에 대해 솔직하게 적어보세요. 많이 쓸수록 더 '나다운' 이모티콘이 나와요!<br>쉼표로 구분해서 여러 개 써도 좋아요.</div>
+      <div class="step-desc">나에 대해 솔직하게 적어보세요. 많이 쓸수록 더 '나다운' 이모티콘이 나와요!<br>여러 개를 적을 때는 반드시 <strong>쉼표(,)로 구분</strong>해주세요. 쉼표로 구분하지 않으면 키워드가 하나로 합쳐져요.</div>
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="q1">나이 / 연령대 <span>예) 20대 초반, 30대 중반</span></label>
-      <input class="form-input" id="q1" type="text" placeholder="예) 20대 초반">
+      <label class="form-label" for="q1">나이 / 연령대</label>
+      <input class="form-input" id="q1" type="text" placeholder="예) 20대 초반, 30대 중반">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q2">직업 <span>예) 대학생, 직장인, 프리랜서</span></label>
-      <input class="form-input" id="q2" type="text" placeholder="예) 직장인">
+      <label class="form-label" for="q2">직업</label>
+      <input class="form-input" id="q2" type="text" placeholder="예) 대학생, 직장인, 프리랜서">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q3">내 성격 <span>예) 내향적, 활발함, 꼼꼼함, 덤벙댐</span></label>
-      <input class="form-input" id="q3" type="text" placeholder="예) 내향적, 꼼꼼한 편">
+      <label class="form-label" for="q3">내 성격</label>
+      <input class="form-input" id="q3" type="text" placeholder="예) 내향적, 활발함, 꼼꼼함, 덤벙댐">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q4">가족관계 <span>예) 외동, 3남매 중 막내, 1남 1녀 중 첫째</span></label>
-      <input class="form-input" id="q4" type="text" placeholder="예) 외동딸">
+      <label class="form-label" for="q4">가족관계</label>
+      <input class="form-input" id="q4" type="text" placeholder="예) 외동, 3남매 중 막내, 1남 1녀 중 첫째">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q5">연인이 있나요? <span>예) 솔로, 연애중, 기혼</span></label>
-      <input class="form-input" id="q5" type="text" placeholder="예) 솔로">
+      <label class="form-label" for="q5">연인이 있나요?</label>
+      <input class="form-input" id="q5" type="text" placeholder="예) 솔로, 연애중, 기혼">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q6">친구들 사이에서 나는? <span>예) 분위기 메이커, 조용한 편, 리더형</span></label>
-      <input class="form-input" id="q6" type="text" placeholder="예) 분위기 메이커">
+      <label class="form-label" for="q6">친구들 사이에서 나는?</label>
+      <input class="form-input" id="q6" type="text" placeholder="예) 분위기 메이커, 조용한 편, 리더형">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q7">관심사 <span>예) 뷰티, 게임, 여행, 카페 탐방</span></label>
-      <input class="form-input" id="q7" type="text" placeholder="예) 카페, 뷰티, 여행">
+      <label class="form-label" for="q7">관심사</label>
+      <input class="form-input" id="q7" type="text" placeholder="예) 뷰티, 게임, 여행, 카페 탐방">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q8">취미 <span>예) 그림 그리기, 독서, 요리, 유튜브 보기</span></label>
-      <input class="form-input" id="q8" type="text" placeholder="예) 그림 그리기, 요리">
+      <label class="form-label" for="q8">취미</label>
+      <input class="form-input" id="q8" type="text" placeholder="예) 그림 그리기, 독서, 요리, 유튜브 보기">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q9">자주 쓰는 이모티콘 스타일 <span>예) 귀여운 캐릭터형, 텍스트형, 짤방형</span></label>
-      <input class="form-input" id="q9" type="text" placeholder="예) 귀여운 캐릭터형">
+      <label class="form-label" for="q11">추구미</label>
+      <input class="form-input" id="q11" type="text" placeholder="예) 힐링, 귀여움, 시크함, 병맛, 감성적">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q10">나의 웃음 포인트 <span>예) 아재개그, 공감 유머, 황당한 상황</span></label>
-      <input class="form-input" id="q10" type="text" placeholder="예) 공감 유머, 일상 꿀팁">
+      <label class="form-label" for="q13">좋아하는 동물</label>
+      <input class="form-input" id="q13" type="text" placeholder="예) 고양이, 강아지, 토끼, 곰">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q11">추구미 <span>예) 힐링, 귀여움, 시크함, 병맛, 감성적</span></label>
-      <input class="form-input" id="q11" type="text" placeholder="예) 귀여움, 힐링">
+      <label class="form-label" for="q10">나의 웃음 포인트</label>
+      <input class="form-input" id="q10" type="text" placeholder="예) 아재개그, 공감 유머, 황당한 상황">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q12">이모티콘을 사용하는 이유 <span>예) 감정 표현이 편해서, 대화가 재밌어서</span></label>
-      <input class="form-input" id="q12" type="text" placeholder="예) 말로 하기 어려운 감정 표현">
+      <label class="form-label" for="q12">이모티콘을 사용하는 이유</label>
+      <input class="form-input" id="q12" type="text" placeholder="예) 감정 표현이 편해서, 대화가 재밌어서">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q13">좋아하는 동물 <span>예) 고양이, 강아지, 토끼, 곰</span></label>
-      <input class="form-input" id="q13" type="text" placeholder="예) 고양이">
+      <label class="form-label" for="q9">자주 쓰는 이모티콘 스타일</label>
+      <input class="form-input" id="q9" type="text" placeholder="예) 귀여운 캐릭터형, 텍스트형, 짤방형">
     </div>
     <div class="form-group">
-      <label class="form-label" for="q14">자유롭게 키워드 <span>예) 퇴근, 야식, 집순이, 칼퇴, MBTI</span></label>
-      <textarea class="form-textarea" id="q14" placeholder="떠오르는 단어를 자유롭게 적어보세요. 쉼표로 구분해도 좋아요."></textarea>
+      <label class="form-label" for="q14">그 외 키워드를 자유롭게 적어주세요.</label>
+      <textarea class="form-textarea" id="q14" placeholder="예) 퇴근, 야식, 집순이, 칼퇴, MBTI&#10;떠오르는 단어를 자유롭게 쉼표로 구분지어 적어주세요."></textarea>
     </div>
   </div>
 
@@ -600,17 +649,18 @@ body {
     <div class="example-box">
       <div class="example-box-title">📋 제목 예시 (참고용)</div>
       <ul class="example-list">
-        <li>퇴근하고 싶은 직장인 토끼의 야식일기</li>
-        <li>집순이 고양이의 소소한 TMI</li>
-        <li>20대 내향인의 솔직한 감정 표현</li>
-        <li>설레는 연애 중인 직장인의 공감 일상</li>
-        <li>카페 좋아하는 대학생의 꾸밈없는 대화</li>
-        <li>귀찮지만 열심히 사는 30대의 현실 공감</li>
+        <li>거친 세상을 살아가는 햄스터</li>
+        <li>오늘도 기분 좋아지는 톡</li>
+        <li>러블리 미니 다꾸템</li>
+        <li>아기 망그러진 곰</li>
+        <li>대학생활 극락쿼카</li>
+        <li>헬멧이의 오토바이 라이프</li>
       </ul>
+      <a class="guide-card-link" href="https://e.kakao.com/" target="_blank" style="display:inline-block; margin-top:12px; font-size:12px;">잘 모르겠다면 이모티콘 샵 둘러보기 →</a>
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="titleInput">나만의 한 줄 제목 <span>이모티콘 샵에서 검색되는 제목으로 지어보세요!</span></label>
+      <label class="form-label" for="titleInput">나만의 한 줄 제목</label>
       <input class="form-input" id="titleInput" type="text" placeholder="예) 칼퇴 꿈꾸는 직장인 고양이의 하루">
     </div>
   </div>
@@ -629,8 +679,8 @@ body {
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="p1">가상 이름 <span>예) 김퇴근, 이집순, 박공감</span></label>
-      <input class="form-input" id="p1" type="text" placeholder="예) 김퇴근">
+      <label class="form-label" for="p1">가상 이름</label>
+      <input class="form-input" id="p1" type="text" placeholder="예) 김퇴근, 이집순, 박공감">
     </div>
     <div class="form-group">
       <label class="form-label" for="p2">나이 / 연령대</label>
@@ -647,6 +697,14 @@ body {
     <div class="form-group">
       <label class="form-label" for="p5">성격</label>
       <input class="form-input" id="p5" type="text" placeholder="예) 외향적이지만 혼자 있는 시간도 좋아함">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="p8">관심사 <span style="font-size:11px;color:var(--sub);font-weight:500;">쉼표(,)로 구분</span></label>
+      <input class="form-input" id="p8" type="text" placeholder="예) 카페, 뷰티, 넷플릭스, 맛집 탐방">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="p9">취미 <span style="font-size:11px;color:var(--sub);font-weight:500;">쉼표(,)로 구분</span></label>
+      <input class="form-input" id="p9" type="text" placeholder="예) 그림 그리기, 요리, 유튜브 보기">
     </div>
     <div class="form-group">
       <label class="form-label" for="p6">이모티콘을 쓰는 이유</label>
@@ -673,22 +731,22 @@ body {
         내 한 줄 제목의 키워드들을 카카오 이모티콘 샵에서 검색해보세요.<br>
         비슷한 컨셉의 이모티콘이 어떤 캐릭터를 쓰는지, 어떤 스타일인지 분석해두면 차별화 포인트를 찾는 데 도움이 돼요.
       </div>
-      <a class="guide-card-link" href="https://e.kakao.com" target="_blank">카카오 이모티콘 샵 →</a>
+      <a class="guide-card-link" href="https://e.kakao.com/" target="_blank">카카오 이모티콘 샵 →</a>
     </div>
 
     <div class="guide-card">
       <div class="guide-card-icon">✏️</div>
       <div class="guide-card-title">캐릭터 디자인 포인트</div>
       <div class="guide-card-desc">
-        • 작은 화면에서도 알아볼 수 있게 <strong>단순한 형태</strong>가 좋아요<br>
-        • 표정 변화를 표현하기 쉬운 <strong>큰 눈, 단순한 입</strong>을 추천해요<br>
-        • 캐릭터의 <strong>대표 색상 1~2가지</strong>를 정해두면 통일감이 생겨요<br>
-        • 타겟 페르소나가 <strong>공감할 수 있는 외형</strong>을 고려해보세요
+        • 이모티콘은 작은 화면에서 보이므로 <strong>생김새·동작·내용이 한 눈에</strong> 들어와야 해요<br>
+        • 키워드와 관련된 타겟층이 선호하는 <strong>생김새와 스타일</strong>이 있어요. 이모티콘 샵에서 관련 키워드를 검색해 분석해보세요<br>
+        • 캐릭터를 포함한 <strong>전체 색상은 5개 이하</strong>가 산만하지 않아서 좋아요<br>
+        • 하나의 캐릭터를 <strong>여러 형태(동물, 사람, 사물 등)로 다양하게</strong> 디자인해보고, 가장 마음에 드는 방향으로 결정하세요
       </div>
     </div>
 
     <div class="info-card">
-      💡 캐릭터 스케치가 완성되면 다음 단계로 넘어가세요. 완벽하지 않아도 괜찮아요!
+      💡 완벽하지 않아도 괜찮아요! 캐릭터 방향이 잡히면 다음 단계로 넘어가세요.
     </div>
   </div>
 
@@ -704,18 +762,29 @@ body {
       <button class="ment-type-btn active" onclick="selectMentType(24, this)">
         <div class="btn-count">24</div>
         <div class="btn-label">움직이는 이모티콘</div>
-        <div class="btn-sub">애니메이션 · 24개</div>
+        <div class="btn-sub">PNG 21개 + WebP 3개 이상</div>
       </button>
       <button class="ment-type-btn" onclick="selectMentType(32, this)">
         <div class="btn-count">32</div>
         <div class="btn-label">멈춰있는 이모티콘</div>
-        <div class="btn-sub">스티커형 · 32개</div>
+        <div class="btn-sub">PNG 32개</div>
+      </button>
+      <button class="ment-type-btn" onclick="selectMentType(35, this)">
+        <div class="btn-count">35</div>
+        <div class="btn-label">움직이는 미니 이모티콘</div>
+        <div class="btn-sub">PNG + WebP 3개 이상</div>
+      </button>
+      <button class="ment-type-btn" onclick="selectMentType(42, this)">
+        <div class="btn-count">42</div>
+        <div class="btn-label">멈춰있는 미니 이모티콘</div>
+        <div class="btn-sub">PNG 42개</div>
       </button>
     </div>
 
     <div class="info-card">
-      💡 각 칸에 멘트 아이디어를 간단하게 적어보세요.<br>
-      예) <em>"칼퇴 성공!"</em> · <em>"나 지금 진심으로 힘들어"</em> · <em>"밥 먹었어?"</em>
+      💡 멘트는 <strong>10자 이내</strong>가 내용 전달력이 높아요. 10자를 넘으면 작은 화면에서 읽기 어렵고 임팩트가 줄어들 수 있어요.<br>
+      상대방과 <strong>주고받기 좋은 멘트</strong>를 넣으면 실제로 많이 쓰이는 이모티콘이 돼요. 단, 흔한 표현보다 <strong>캐릭터의 성격을 잘 살린 표현</strong>으로 개성을 담아주세요.<br>
+      예) <em>"밥 먹었어?"</em> · <em>"ㅋㅋ 진짜?"</em> · <em>"수고했어!"</em> · <em>"칼퇴 성공!"</em>
     </div>
 
     <div class="ment-list" id="mentList"></div>
@@ -733,15 +802,11 @@ body {
       <div class="guide-card-icon">📝</div>
       <div class="guide-card-title">스케치 팁</div>
       <div class="guide-card-desc">
-        • 완성도보다 <strong>아이디어 전달</strong>이 목적이에요. 러프하게 그려도 OK<br>
-        • 움직이는 이모티콘은 <strong>처음·중간·끝 3컷</strong>을 대략 잡아보세요<br>
-        • 캐릭터의 <strong>표정과 포즈</strong>가 멘트와 잘 맞는지 확인해보세요<br>
+        • <strong>다양한 캐릭터 디자인 중 하나씩만 먼저 스케치</strong>해보고, 가장 마음에 드는 디자인을 선택해 나머지를 모두 그려나가세요. 중간에 디자인을 바꾸면 처음부터 다시 그려야 할 수 있어요!<br>
+        • <strong>인체 비율이나 구도가 엉성하면 미완성처럼 보여</strong> 심사에서 불리할 수 있어요. 기본 비율에 주의해 주세요<br>
+        • 움직이는 이모티콘은 <strong>처음·중간·끝 3컷</strong>을 먼저 잡고, 사이사이를 연결하는 동작을 추가하면 자연스러운 애니메이션이 돼요<br>
         • 비슷한 동작이 겹치지 않도록 다양하게 구성하면 좋아요
       </div>
-    </div>
-
-    <div class="info-card">
-      💡 스케치가 완성되면 승인율을 높이기 위해 먼저 제안(미리보기) 해보는 것도 방법이에요!
     </div>
   </div>
 
@@ -757,20 +822,23 @@ body {
       <div class="guide-card-icon">📐</div>
       <div class="guide-card-title">카카오 이모티콘 규격</div>
       <div class="guide-card-desc">
-        • <strong>멈춰있는 이모티콘:</strong> 370×320px, PNG<br>
-        • <strong>움직이는 이모티콘:</strong> 370×320px, APNG / GIF (최대 2MB)<br>
+        • <strong>멈춰있는 이모티콘:</strong> 320×320px, PNG 32개<br>
+        • <strong>움직이는 이모티콘:</strong> 320×320px, PNG 21개 + WebP 3개 이상<br>
+        • <strong>멈춰있는 미니 이모티콘:</strong> 320×320px, PNG 42개<br>
+        • <strong>움직이는 미니 이모티콘:</strong> 320×320px, PNG + WebP 3개 이상 (총 35개)<br>
         • 배경은 <strong>투명</strong>으로 저장해야 해요<br>
-        • 이미지 가장자리에 <strong>여백(패딩)</strong>을 충분히 주세요
+        • WebP 애니메이터는 카카오이모티콘 스튜디오 로그인 후 <strong>왼쪽 하단</strong>에서 이용할 수 있어요
       </div>
+      <a class="guide-card-link" href="https://emoticonstudio.kakao.com/webp-animator" target="_blank">WebP 애니메이터 바로가기 →</a>
     </div>
 
     <div class="guide-card">
       <div class="guide-card-icon">🎨</div>
       <div class="guide-card-title">채색 팁</div>
       <div class="guide-card-desc">
-        • 전체 이모티콘의 <strong>색상 팔레트를 통일</strong>하면 세트감이 생겨요<br>
-        • 너무 많은 색보다 <strong>2~3가지 메인 컬러</strong>를 정해두는 게 좋아요<br>
-        • 작은 화면에서도 잘 보이려면 <strong>채도 높은 색</strong>이 유리해요
+        • 캐릭터 색을 포함해 <strong>전체 색상은 5개 내외</strong>가 산만하지 않아서 추천해요<br>
+        • 색마다 느껴지는 느낌이 다르므로 <strong>이모티콘 컨셉과 잘 어울리는 색감</strong>을 선택해야 해요<br>
+        • 채도·명도를 고려해서 <strong>전체 색의 밸런스</strong>가 잘 맞도록 조화롭게 구성해 주세요
       </div>
     </div>
   </div>
@@ -791,7 +859,7 @@ body {
         ✅ 모든 파일이 규격에 맞는지 확인 (크기, 형식, 배경 투명)<br>
         ✅ 멘트가 잘 읽히는지 확인 (가독성)<br>
         ✅ 비슷한 동작이 너무 많지 않은지 확인<br>
-        ✅ 한 줄 제목과 타이틀 이미지 준비
+        ✅ 한 줄 제목과 이모티콘 이미지가 잘 어울리는지 확인
       </div>
     </div>
 
@@ -799,11 +867,18 @@ body {
       <div class="guide-card-icon">🌟</div>
       <div class="guide-card-title">제안 완료 후</div>
       <div class="guide-card-desc">
-        심사 결과는 보통 <strong>2~8주</strong> 소요돼요.<br>
-        반려되더라도 피드백을 참고해서 수정 후 재도전할 수 있어요.<br>
+        심사 결과는 보통 <strong>2주 정도</strong> 소요돼요.<br>
+        미승인이어도 괜찮아요! <strong>기초컨설팅 봇</strong>으로 내 이모티콘을 다시 점검해보세요.<br>
         궁금한 점은 이모팁스 인스타 DM으로 언제든지 질문해주세요 😊
       </div>
+      <a class="guide-card-link" href="bot.html" style="background:var(--green); margin-right:8px;">기초컨설팅 봇 →</a>
       <a class="guide-card-link" href="https://instagram.com/emotips_official" target="_blank">@emotips_official →</a>
+    </div>
+
+    <div style="background:var(--gray); border-radius:14px; padding:16px 18px; font-size:12px; color:var(--sub); line-height:1.7;">
+      <strong style="color:var(--dark); font-size:13px;">📄 PDF로 저장하는 방법</strong><br>
+      🍎 <strong>맥북:</strong> PDF 저장 버튼 → 인쇄 창 왼쪽 하단 <strong>[PDF]</strong> → <strong>[PDF로 저장]</strong><br>
+      🪟 <strong>윈도우:</strong> PDF 저장 버튼 → 프린터 <strong>[Microsoft Print to PDF]</strong> 선택 → <strong>[인쇄]</strong> → 저장 위치 지정
     </div>
 
     <div style="margin-top:28px; text-align:center;">
@@ -822,7 +897,16 @@ body {
   <button class="btn-nav btn-prev" id="btnPrev" onclick="prevStep()">← 이전</button>
   <button class="btn-nav btn-next" id="btnNext" onclick="nextStep()">다음 →</button>
   <button class="btn-nav btn-pdf" id="btnPdf" style="display:none" onclick="printPdf()">📄 PDF 저장</button>
+  <button class="btn-nav btn-restart" id="btnRestart" style="display:none" onclick="restartProcess()">🔄 처음으로</button>
 </div>
+
+<!-- 플로팅 홈 버튼 -->
+<a href="index.html" class="fab-home" title="홈으로">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+</a>
 
 <script>
 // ── 상태 ──
@@ -838,6 +922,13 @@ for (let i = 1; i <= TOTAL_STEPS; i++) {
   d.className = 'step-dot' + (i === 1 ? ' active' : '');
   d.id = 'dot' + i;
   d.textContent = i;
+  d.style.cursor = 'pointer';
+  d.title = STEP_NAMES[i - 1];
+  d.addEventListener('click', () => {
+    if (i === 2) renderChips();
+    if (i === 3) updateSelectedDisplay();
+    goToStep(i);
+  });
   dotsEl.appendChild(d);
 }
 
@@ -872,7 +963,7 @@ function collectKeywords() {
   qIds.forEach(id => {
     const val = document.getElementById(id).value.trim();
     if (!val) return;
-    val.split(/[,，、\s]+/).forEach(k => {
+    val.split(/[,，、]+/).forEach(k => {
       k = k.trim();
       if (k.length > 0) keywords.add(k);
     });
@@ -931,14 +1022,19 @@ function goToStep(n) {
 
   const pct = Math.round((n / TOTAL_STEPS) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('stepLabelText').textContent = `STEP ${n} / ${TOTAL_STEPS} · ${STEP_NAMES[n-1]}`;
+  document.getElementById('stepLabelText').innerHTML = `STEP ${n} / ${TOTAL_STEPS} · ${STEP_NAMES[n-1]} <span style="color:var(--sub);">/ 숫자를 누르면 해당 단계로 이동해요</span>`;
 
   document.getElementById('btnPrev').style.display = n === 1 ? 'none' : '';
   document.getElementById('btnNext').style.display = n === TOTAL_STEPS ? 'none' : '';
   document.getElementById('btnPdf').style.display = n === TOTAL_STEPS ? '' : 'none';
+  document.getElementById('btnRestart').style.display = n === TOTAL_STEPS ? '' : 'none';
+  document.getElementById('topBtnPrev').disabled = n === 1;
+  document.getElementById('topBtnNext').disabled = n === TOTAL_STEPS;
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
   currentStep = n;
+  // 스텝 이동 후 스크롤 상태 재확인 (짧은 페이지 대비)
+  setTimeout(checkScroll, 300);
 }
 
 function nextStep() {
@@ -961,8 +1057,32 @@ function printPdf() {
   document.querySelector(`[data-step="${currentStep}"]`).style.display = 'block';
 }
 
+function restartProcess() {
+  if (!confirm('처음부터 다시 시작하면 입력한 내용이 모두 사라져요. 계속할까요?')) return;
+  document.querySelectorAll('.form-input, .form-textarea, .ment-input').forEach(el => el.value = '');
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  goToStep(1);
+}
+
 // 초기화
 goToStep(1);
+
+// ── 스크롤 끝에 도달하면 버튼 표시 ──
+const navBar = document.querySelector('.nav-bar');
+
+function checkScroll() {
+  const scrolled = window.scrollY + window.innerHeight;
+  const total = document.documentElement.scrollHeight;
+  // 페이지 길이가 짧아서 스크롤이 없는 경우도 표시
+  if (scrolled >= total - 40 || total <= window.innerHeight + 10) {
+    navBar.classList.add('visible');
+  } else {
+    navBar.classList.remove('visible');
+  }
+}
+
+window.addEventListener('scroll', checkScroll, { passive: true });
+window.addEventListener('resize', checkScroll);
 </script>
 </body>
 </html>
