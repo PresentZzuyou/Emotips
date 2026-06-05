@@ -1001,7 +1001,7 @@ body {
 // ── 상태 ──
 let currentStep = 1;
 const TOTAL_STEPS = 9;
-const STEP_NAMES = ['나인드맵','키워드 추출','한 줄 제목','타겟 페르소나','캐릭터 디자인','멘트 아이디어','동작 스케치','선 따고 채색','제안하기'];
+const STEP_NAMES = ['나인드맵','키워드 도출','키워드 선택','페르소나/제목 확정','캐릭터 디자인','멘트 아이디어','동작 스케치','선 따고 채색','제안하기'];
 let mentCount = 24;
 
 // ── 스텝 도트 생성 ──
@@ -1014,8 +1014,9 @@ for (let i = 1; i <= TOTAL_STEPS; i++) {
   d.style.cursor = 'pointer';
   d.title = STEP_NAMES[i - 1];
   d.addEventListener('click', () => {
-    if (i === 2) renderChips();
-    if (i === 3) updateSelectedDisplay();
+    if (i === 2) renderKeywordPreview();
+    if (i === 3) renderChips();
+    if (i === 4) updateSelectedDisplay();
     goToStep(i);
   });
   dotsEl.appendChild(d);
@@ -1082,6 +1083,16 @@ function renderChips() {
   updateSelectedCount();
 }
 
+function renderKeywordPreview() {
+  const preview = document.getElementById('keywordPreviewChips');
+  const keywords = collectKeywords();
+  if (keywords.length === 0) {
+    preview.innerHTML = '<span class="chip-empty">STEP 1을 먼저 작성해주세요 🙂</span>';
+    return;
+  }
+  preview.innerHTML = keywords.map(k => `<div class="chip">${k}</div>`).join('');
+}
+
 function updateSelectedCount() {
   const sel = document.querySelectorAll('#keywordChips .chip.selected');
   document.getElementById('selectedCount').textContent = sel.length;
@@ -1091,7 +1102,7 @@ function updateSelectedDisplay() {
   const display = document.getElementById('selectedKeywordsDisplay');
   const sel = [...document.querySelectorAll('#keywordChips .chip.selected')].map(c => c.textContent);
   if (sel.length === 0) {
-    display.innerHTML = '<span class="chip-empty">STEP 2에서 키워드를 선택해주세요</span>';
+    display.innerHTML = '<span class="chip-empty">STEP 3에서 키워드를 선택해주세요</span>';
     return;
   }
   display.innerHTML = sel.map(k => `<div class="chip selected">${k}</div>`).join('');
@@ -1127,8 +1138,9 @@ function goToStep(n) {
 }
 
 function nextStep() {
-  if (currentStep === 1) renderChips();
-  if (currentStep === 2) updateSelectedDisplay();
+  if (currentStep === 1) renderKeywordPreview();
+  if (currentStep === 2) renderChips();
+  if (currentStep === 3) updateSelectedDisplay();
   if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
 }
 
