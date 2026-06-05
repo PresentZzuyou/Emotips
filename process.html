@@ -303,6 +303,26 @@ body {
   color: var(--blue);
   font-weight: 900;
 }
+.title-example-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.title-example-list li {
+  width: fit-content;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 11px 7px 24px;
+  line-height: 1.35;
+}
+.title-example-list li::before {
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 /* ── 페르소나 ── */
 .persona-example {
