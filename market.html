@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이모티콘 시장 분석 TIP - 이모팁스</title>
+<meta property="og:title" content="이모티콘 시장 분석 TIP">
+<meta property="og:description" content="이모티콘 시장 분석 방법을 읽고 PDF로 확인하는 정보 페이지">
+<meta property="og:type" content="website">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #0b8bff;
+  --yellow: #faff32;
+  --dark: #231815;
+  --red: #e84c3d;
+  --green: #00a969;
+  --pink: #f2517a;
+  --gray: #f5f5f8;
+  --border: #e8e8ee;
+  --sub: #666;
+}
+
+body {
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  background:
+    linear-gradient(rgba(35,24,21,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35,24,21,0.045) 1px, transparent 1px),
+    #fff;
+  background-size: 22px 22px;
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+}
+
+.home-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--dark);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.top-title {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+.page {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 26px 20px 72px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--yellow);
+  border: 3px solid var(--dark);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 7px 7px 0 var(--dark);
+  margin-bottom: 28px;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(35,24,21,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35,24,21,0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+  pointer-events: none;
+}
+
+.hero > * { position: relative; }
+
+.kicker {
+  display: inline-block;
+  background: #fff;
+  border: 2px solid var(--dark);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.12;
+  font-weight: 1000;
+  letter-spacing: -1.2px;
+}
+
+.hero h1 span {
+  color: var(--blue);
+  -webkit-text-stroke: 1.5px var(--dark);
+  text-shadow: 2px 2px 0 var(--dark);
+}
+
+.hero p {
+  max-width: 660px;
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 999px;
+  border: 2px solid var(--dark);
+  background: var(--blue);
+  color: #fff;
+  padding: 10px 17px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 3px 3px 0 var(--dark);
+}
+
+.action-link.secondary {
+  background: #fff;
+  color: var(--dark);
+}
+
+.section {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-size: 19px;
+  font-weight: 1000;
+  letter-spacing: -0.4px;
+  margin-bottom: 10px;
+}
+
+.section-desc {
+  color: var(--sub);
+  font-size: 14px;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.tip-card {
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 156px;
+  color: #fff;
+}
+
+.tip-card:nth-child(1) { background: var(--blue); }
+.tip-card:nth-child(2) { background: var(--green); }
+.tip-card:nth-child(3) {
+  background: var(--yellow);
+  color: var(--dark);
+  border: 2px solid var(--dark);
+}
+
+.tip-num {
+  font-size: 12px;
+  font-weight: 900;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+.tip-title {
+  font-size: 15px;
+  font-weight: 1000;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.tip-text {
+  font-size: 12.5px;
+  line-height: 1.65;
+  font-weight: 700;
+  opacity: 0.92;
+  word-break: keep-all;
+}
+
+.check-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.check-list li {
+  position: relative;
+  padding-left: 22px;
+  color: #444;
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.check-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue);
+}
+
+.pdf-pages {
+  display: grid;
+  gap: 18px;
+}
+
+.pdf-page {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.pdf-page img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pdf-frame {
+  display: block;
+  width: 100%;
+  height: min(76vh, 780px);
+  border: 0;
+  background: #fff;
+}
+
+.pdf-fallback {
+  display: none;
+  padding: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--sub);
+}
+
+@media (max-width: 760px) {
+  body { background-size: 18px 18px; }
+  .top-bar { padding: 10px 14px; }
+  .home-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .top-title {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+  .page {
+    padding: 18px 14px 48px;
+  }
+  .hero {
+    border-width: 2px;
+    border-radius: 18px;
+    padding: 21px 16px;
+    box-shadow: 4px 4px 0 var(--dark);
+    margin-bottom: 22px;
+  }
+  .kicker {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+  .hero h1 {
+    font-size: 29px;
+    letter-spacing: -0.7px;
+  }
+  .hero h1 span {
+    -webkit-text-stroke: 1px var(--dark);
+    text-shadow: 1.5px 1.5px 0 var(--dark);
+  }
+  .hero p,
+  .section-desc,
+  .check-list li {
+    font-size: 13px;
+  }
+  .action-link {
+    flex: 1 1 140px;
+    min-height: 43px;
+    padding: 9px 12px;
+    font-size: 11.5px;
+    box-shadow: 2px 2px 0 var(--dark);
+    text-align: center;
+  }
+  .section {
+    border-radius: 16px;
+    padding: 18px 16px;
+  }
+  .section-title {
+    font-size: 17px;
+  }
+  .tip-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .tip-card {
+    min-height: auto;
+    padding: 16px;
+  }
+  .pdf-frame {
+    height: 68vh;
+  }
+}
+
+@media (max-width: 420px) {
+  .action-link {
+    flex-basis: 100%;
+  }
+  .pdf-frame {
+    height: 62vh;
+  }
+}
+</style>
+</head>
+<body>
+<header class="top-bar">
+  <a class="home-btn" href="index.html" aria-label="홈으로">
+    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  </a>
+  <div class="top-title">이모티콘 시장 분석 TIP</div>
+  <span class="home-btn" aria-hidden="true" style="opacity:0; pointer-events:none;"></span>
+</header>
+
+<main class="page">
+  <section class="hero">
+    <div class="kicker">이모티콘 승인 팁은? 이모팁스!</div>
+    <h1>이모티콘<br>시장분석 <span>TIP</span></h1>
+    <p>원본 PDF 내용을 그대로 확인할 수 있습니다.</p>
+    <div class="actions">
+      <a class="action-link" href="assets/emoticon-market-analysis-2026-06.pdf" download>원본 PDF 다운로드</a>
+    </div>
+  </section>
+
+  <div class="pdf-pages" id="pdfPreview">
+    <div class="pdf-page"><img src="assets/page-1.png" alt="이모티콘 시장분석 TIP PDF 1페이지"></div>
+    <div class="pdf-page"><img src="assets/page-2.png" alt="이모티콘 시장분석 TIP PDF 2페이지"></div>
+    <div class="pdf-page"><img src="assets/page-3.png" alt="이모티콘 시장분석 TIP PDF 3페이지"></div>
+    <div class="pdf-page"><img src="assets/page-4.png" alt="이모티콘 시장분석 TIP PDF 4페이지"></div>
+    <div class="pdf-page"><img src="assets/page-5.png" alt="이모티콘 시장분석 TIP PDF 5페이지"></div>
+    <div class="pdf-page"><img src="assets/page-6.png" alt="이모티콘 시장분석 TIP PDF 6페이지"></div>
+  </div>
+</main>
+</body>
+</html>
