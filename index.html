@@ -162,14 +162,6 @@
   .card:nth-child(2) { background: #e84c3d; animation-delay: 0.18s; }
   .card:nth-child(3) { background: #00a969; animation-delay: 0.26s; }
   .card:nth-child(4) { background: #f2517a; animation-delay: 0.34s; }
-  .card:nth-child(5) { background: #faff32; animation-delay: 0.42s; }
-  .card:nth-child(5) .card-title,
-  .card:nth-child(5) .card-desc { color: #231815; text-shadow: none; }
-  .card:nth-child(5) .card-arrow span {
-    background: rgba(0,0,0,0.1);
-    border-color: rgba(0,0,0,0.25);
-    color: #231815;
-  }
 
   .card.market-card {
     background: #faff32;
@@ -201,8 +193,10 @@
 
   .card.request-card {
     background: #eceff1;
+    order: 999;
     position: relative;
     overflow: hidden;
+    animation-delay: 0.42s;
   }
   .card.request-card::before {
     content: "?";
