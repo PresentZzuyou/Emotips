@@ -200,6 +200,41 @@
     color: #0b8bff;
   }
 
+  .msg-bubble .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 10px 0 12px;
+  }
+  .msg-bubble .compare-card {
+    background: #f5f5f8;
+    border: 1px solid #ececf2;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 12.5px;
+    color: #444;
+    line-height: 1.55;
+  }
+  .msg-bubble .compare-card strong {
+    display: block;
+    color: #231815;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .msg-bubble .formula-box {
+    background: #e6f4ff;
+    border-radius: 12px;
+    color: #231815;
+    font-weight: 800;
+    margin: 10px 0 12px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  @media (max-width: 420px) {
+    .msg-bubble .compare-grid { grid-template-columns: 1fr; }
+  }
+
   .buttons-row {
     display: flex;
     flex-wrap: wrap;
@@ -303,6 +338,10 @@
     background: #0b8bff;
     color: #fff;
   }
+  .hook-link-btn.openchat {
+    background: #faff32;
+    color: #231815;
+  }
   .hook-link-btn:hover { opacity: 0.85; transform: translateY(-1px); }
 
   /* ── 스타일 A: 채팅 말풍선 (봇 메시지) ── */
@@ -316,11 +355,15 @@
     line-height: 1.7;
   }
   .hook-bubble .hook-link-btn.insta,
-  .hook-bubble .hook-link-btn.littly {
+  .hook-bubble .hook-link-btn.littly,
+  .hook-bubble .hook-link-btn.openchat {
+    display: block;
+    width: fit-content;
     background: rgba(255,255,255,0.2);
     border: 1.5px solid rgba(255,255,255,0.6);
     color: #fff;
   }
+  .hook-bubble .hook-link-btn.openchat { margin-top: 8px; }
   .hook-bubble .hook-link-btn:hover { background: rgba(255,255,255,0.35); transform: none; }
 
   /* ── 스타일 B: 팝업 오버레이 ── */
@@ -519,7 +562,7 @@ const FLOWS = {
   },
 
   plan_title: {
-    msg: `한 줄 제목은 <em>이모티콘 제작의 등대</em>예요. 그리다 보면 마음이 흔들리는데, 제목이 기준점이 돼줘요.<br><br>좋은 제목 공식: <em>키워드를 그대로 제목에 녹이기</em><br><br>예시:<br>• 키워드: 동물 + 대학생 + 연애 → <em>〈우리는 풋풋한 대학생 커플〉</em><br>• 한 발 더: 강아지 + 개강한(중의어) → <em>〈우리는 개강한 대학생 커플〉</em><br><br>타겟층이 제목만 봐도 <em>'나를 위한 거다!'</em> 느낄 수 있어야 해요.<div class="tip-box warn">제목을 정했으면 끝까지 유지하세요. 커플 내용인데 갑자기 솔로 내용이 들어간다든지 하면 안 돼요!</div>`,
+    msg: `한 줄 제목은 <em>이모티콘 제작의 등대</em>예요. 그리다 보면 마음이 흔들리는데, 제목이 기준점이 돼줘요.<br><br>좋은 제목 공식: <em>키워드를 그대로 제목에 녹이기</em><br><br>예시:<br>• 키워드: 동물 + 대학생 + 연애 → <em>〈우리는 풋풋한 대학생 커플〉</em><br>• 한 발 더: 강아지 + 개강한(중의어) → <em>〈우리는 개강한 대학생 커플〉</em><br><br><strong>제목 아이디어 수집법</strong><br><ul class="check-list dot"><li><em>이모티콘 스토어</em>에서 다른 이모티콘들의 제목을 분석해 보세요</li><li><em>유튜브, 인스타그램</em>에서 영상과 댓글, 사람들이 자주 쓰는 멘트를 잘 살펴보세요</li></ul>타겟층이 제목만 봐도 <em>'나를 위한 거다!'</em> 느낄 수 있어야 해요.<div class="tip-box warn">제목을 정했으면 끝까지 유지하세요. 커플 내용인데 갑자기 솔로 내용이 들어간다든지 하면 안 돼요!</div>`,
     buttons: [
       { text: '멘트 아이디어는요?', next: 'plan_ment' },
       { text: '다른 질문할게요', next: 'plan_main' },
@@ -560,6 +603,7 @@ const FLOWS = {
       { text: '📐 지켜야 할 기본 규격 사항', next: 'draw_guideline' },
       { text: '🐣 캐릭터 디자인이 고민이에요', next: 'draw_character' },
       { text: '🎨 그림체가 타겟층에 맞는지 모르겠어요', next: 'draw_style' },
+      { text: '🌈 잘 어울리는 색감은 어떻게 정해요?', next: 'draw_color' },
       { text: '👁️ 가독성이 중요한가요?', next: 'draw_readability' },
       { text: '😰 미완성처럼 보일까봐요', next: 'draw_unfinished' },
     ]
@@ -574,7 +618,7 @@ const FLOWS = {
   },
 
   draw_character: {
-    msg: `<em>가장 많이 헷갈리는 부분</em>이에요. 캐릭터 디자인과 이모티콘 디자인은 달라요!<br><br>이모티콘을 티셔츠로 비유하자면 <em>흰색 민무늬 티셔츠, 혹은 작게 캐릭터가 들어간 티셔츠</em>예요.<br><em>휘뚜루마뚜루 입을 수 있는 사용성</em>이 핵심이에요. 타인에게 보여지는 물건이라 어디서나, 누가 써도 어색하지 않아야 해요.<br><br>캐릭터 디자인을 비유하자면 <em>큼지막한 캐릭터 티셔츠</em>예요.<br>실제로 입기보다 소장의 가치가 더 큰 경우가 많죠.<br><br>공식: <em>대중성 7~8 : 개성 2~3</em><br><br>이모티콘 기획 시 스스로에게 자문해 보세요.<br><em>'내 타겟층은 어떤 티셔츠를 좋아할까?'</em><br><br>요즘 트렌드는 크게 두 방향이에요:<br><ul class="check-list dot"><li><em>독특한 캐릭터 형태</em> — 평범한 고양이·토끼 대신 개성 있는 외형</li><li><em>독특한 내용</em> — 캐릭터는 무난해도 컨셉·상황이 신선한 경우</li></ul><div class="tip-box">캐릭터 외형보다 내용에 집중하세요! 외형이 독창적이지 않아도, 내용과 상황이 참신하면 충분히 승인 날 수 있어요.</div>`,
+    msg: `<em>가장 많이 헷갈리는 부분</em>이에요. 캐릭터 디자인과 이모티콘 디자인은 달라요!<br><br><div class="compare-grid"><div class="compare-card"><strong>이모티콘 디자인</strong><em>사용성 중심</em><br>흰색 민무늬 티셔츠, 혹은 작게 캐릭터가 들어간 티셔츠에 가까워요.<br><br>타인에게 보여지는 물건이라 어디서나, 누가 써도 어색하지 않아야 해요. 핵심은 <em>휘뚜루마뚜루 쓸 수 있는가</em>예요.</div><div class="compare-card"><strong>캐릭터 디자인</strong><em>소장가치 중심</em><br>큼지막한 캐릭터 티셔츠에 가까워요.<br><br>실제로 자주 입기보다는 소장의 가치가 더 큰 경우가 많아요. 개성과 취향이 강하게 드러나는 쪽이에요.</div></div><div class="formula-box">공식: 대중성 7~8 : 개성 2~3</div>이모티콘 기획 시 스스로에게 자문해 보세요.<br><em>'내 타겟층은 어떤 티셔츠를 좋아할까?'</em><br><br>요즘 트렌드는 크게 두 방향이에요:<br><ul class="check-list dot"><li><em>독특한 캐릭터 외형</em></li><li><em>확실하고 신선한 내용의 컨셉</em></li></ul><div class="tip-box">캐릭터 외형보다 내용에 집중하세요! 외형이 독창적이지 않아도, 내용과 상황이 참신하면 충분히 승인 날 수 있어요.</div>`,
     buttons: [
       { text: '미완성처럼 보이는 문제도 있어요', next: 'draw_unfinished' },
       { text: '다른 고민 있어요', next: 'draw_main' },
@@ -593,6 +637,15 @@ const FLOWS = {
   draw_style: {
     msg: `그림 공부도 <em>타겟층에 맞게</em> 해야 해요!<br><br>타겟층별 선호 스타일이 달라요:<br><br><strong>10~30대:</strong> 밈·짤·병맛·손그림 감성, 동물 캐릭터, 유행하는 내용 반영<br><strong>40~50대:</strong> 웰메이드 (깔끔한 선, 색이 풍부, 부드러운 움직임), 긍정적 멘트, 리액션 중심<br><br>고퀄리티 = 승인이 아니에요! 타겟층이 <em>원하는 느낌</em>이 있어야 해요.<br><br>⚠️ 트렌드는 <em>매우 빠르게 변해요.</em> 지금 인기 있는 스타일이 반년 뒤엔 유행이 아닐 수 있어요.<br>이모티콘 스토어를 <em>매일 들어가서</em> 신규·인기 탭을 훑는 습관을 들이세요.<div class="tip-box">10~30대 타겟인데 나도 모르게 완성도 높게 그려진다면? 반대 손으로 그려보라고 조언할 정도예요. 그만큼 '느낌'이 중요해요!</div>`,
     buttons: [
+      { text: '다른 고민 있어요', next: 'draw_main' },
+      { text: '처음으로', next: 'start' },
+    ]
+  },
+
+  draw_color: {
+    msg: `색감은 내가 좋아하는 것을 고르는 게 아니라 <em>내 이모티콘의 주제와 타겟층에 맞게 정하는 것</em>이 중요해요.<br><br><strong>색감 정하는 법</strong><br><ul class="check-list dot"><li><em>이모티콘 스토어</em>에서 비슷한 주제의 이모티콘들이 색을 어떻게 쓰는지 참고해 보세요</li><li><em>컬러 조합 사이트</em>에 들어가서 어울리는 배색을 찾아보세요</li><li><em>AI에게 내 이모티콘 이미지와 주제, 느낌</em>을 설명하고 색상을 추천받아 보세요</li></ul><div class="tip-box">색감도 시장 분석의 일부예요. 내 취향만으로 고르기보다, 비슷한 주제에서 자주 쓰이는 색과 내 캐릭터 분위기가 만나는 지점을 찾아보세요.</div>`,
+    buttons: [
+      { text: '그림체 이야기도 궁금해요', next: 'draw_style' },
       { text: '다른 고민 있어요', next: 'draw_main' },
       { text: '처음으로', next: 'start' },
     ]
@@ -782,6 +835,7 @@ function restartChat() {
 
   // ── 후킹 시스템 ──
   const INSTA_URL = 'https://instagram.com/emotips_official';
+  const OPENCHAT_URL = 'https://open.kakao.com/o/gc2CSWyi';
   let hookClickCount = 0;
   const HOOK_TRIGGER_CLICKS = 8;
 
@@ -791,10 +845,11 @@ function restartChat() {
     row.innerHTML = '<div class="msg-avatar">' + AVATAR + '</div>'
       + '<div class="hook-bubble">'
       + '이모팁스 컨설팅 봇을 이용해 주셔서 감사합니다! 🙏<br><br>'
-      + '요청하고 싶은 내용이 있거나 버그·문의·건의 사항이 있다면 인스타 DM으로 알려주세요.<br>'
+      + '요청하고 싶은 내용이 있거나 버그·문의·건의 사항이 있다면 오픈채팅방에 물어봐주세요.<br>'
       + '쭈유 작가가 직접 확인하고 내용을 추가해 드릴게요 😊<br><br>'
       + '더 많은 이모티콘 팁도 인스타에서 만나보세요! 🌟<br><br>'
       + '<a href="' + INSTA_URL + '" target="_blank" class="hook-link-btn insta">📸 @emotips_official 팔로우하기</a>'
+      + '<a href="' + OPENCHAT_URL + '" target="_blank" class="hook-link-btn openchat">💬 오픈채팅방 입장하기</a>'
       + '</div>';
     messages.appendChild(row);
     scrollToBottom();
