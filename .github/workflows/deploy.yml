@@ -3,9 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *"
 
 permissions:
   contents: read
@@ -24,12 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Sync Notion tips
-        run: node scripts/sync-notion-tips.mjs
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_TIPS_DATABASE_ID: ${{ secrets.NOTION_TIPS_DATABASE_ID }}
-          NOTION_TIPS_PAGE_ID: 389f856893708000b987fbeebd80d5d8
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
