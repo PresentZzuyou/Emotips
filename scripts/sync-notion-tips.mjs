@@ -61,7 +61,7 @@ function normalizeNotionId(id) {
 
 function findTitle(page) {
   const titleProperty = Object.values(page.properties || {}).find((property) => property.type === 'title');
-  return richTextToPlain(titleProperty?.title) || '제목 없는 꿀팁';
+  return richTextToPlain(titleProperty?.title) || '제목 없는 질문';
 }
 
 function findRichTextContent(page) {
@@ -184,7 +184,7 @@ async function fetchPageTips(rootPageId) {
     const page = await fetchPage(block.id);
     tips.push({
       id: page.id,
-      title: findTitle(page) || block.child_page?.title || '제목 없는 꿀팁',
+      title: findTitle(page) || block.child_page?.title || '제목 없는 질문',
       content: await fetchBlockContent(page.id),
       url: page.url || '',
       lastEditedTime: page.last_edited_time || block.last_edited_time || ''

@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>꿀팁 리스트 - 이모팁스</title>
-<meta property="og:title" content="꿀팁 리스트 - 이모팁스">
-<meta property="og:description" content="노션에 정리한 이모티콘 꿀팁 모음">
+<title>자주 묻는 질문 - 이모팁스</title>
+<meta property="og:title" content="자주 묻는 질문 - 이모팁스">
+<meta property="og:description" content="노션에 정리한 자주 묻는 질문 모음">
 <meta property="og:type" content="website">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -178,14 +178,14 @@
 
   <main>
     <section class="hero">
-      <div class="eyebrow">💡 Notion Tips</div>
-      <h1>꿀팁 리스트</h1>
-      <p class="intro">노션에 적어둔 이모티콘 관련 글을 단순한 텍스트로 모아두는 공간이에요. 노션 글을 수정하면 예약 동기화로 사이트에 자동 반영됩니다.</p>
+      <div class="eyebrow">💡 Notion FAQ</div>
+      <h1>자주 묻는 질문</h1>
+      <p class="intro">노션에 적어둔 자주 묻는 질문을 단순한 텍스트로 모아두는 공간이에요. 노션 글을 수정하면 예약 동기화로 사이트에 자동 반영됩니다.</p>
       <div class="meta" id="updatedMeta" hidden></div>
     </section>
 
     <section class="tips-list" id="tipsList" aria-live="polite">
-      <div class="empty">꿀팁을 불러오는 중이에요.</div>
+      <div class="empty">질문 리스트를 불러오는 중이에요.</div>
     </section>
   </main>
 
@@ -235,12 +235,12 @@
     }
 
     if (!tips.length) {
-      tipsList.innerHTML = '<div class="empty">아직 등록된 꿀팁이 없어요.</div>';
+      tipsList.innerHTML = '<div class="empty">아직 등록된 질문이 없어요.</div>';
       return;
     }
 
     tipsList.innerHTML = tips.map((tip) => {
-      const title = escapeHTML(tip.title || '제목 없는 꿀팁');
+      const title = escapeHTML(tip.title || '제목 없는 질문');
       const content = renderContent(tip.content || '');
 
       return `
@@ -258,7 +258,7 @@
       if (!response.ok) throw new Error('tips.json load failed');
       renderTips(await response.json());
     } catch (error) {
-      tipsList.innerHTML = '<div class="empty">꿀팁을 불러오지 못했어요. 잠시 후 다시 확인해주세요.</div>';
+      tipsList.innerHTML = '<div class="empty">질문 리스트를 불러오지 못했어요. 잠시 후 다시 확인해주세요.</div>';
     }
   }
 
