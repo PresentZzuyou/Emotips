@@ -1,0 +1,13 @@
+{
+  "updatedAt": null,
+  "source": "notion",
+  "tips": [
+    {
+      "id": "setup",
+      "title": "노션 연동 준비 중",
+      "content": "GitHub Secrets에 NOTION_TOKEN을 등록하고, 노션 페이지를 해당 Integration에 공유하면 노션에 적어둔 꿀팁이 이 페이지에 자동으로 표시됩니다.",
+      "url": "",
+      "lastEditedTime": ""
+    }
+  ]
+}

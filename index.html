@@ -221,6 +221,23 @@
     color: #231815;
   }
 
+  .card.tips-card {
+    background: #f2517a;
+    position: relative;
+    overflow: hidden;
+  }
+  .card.tips-card::before {
+    content: "";
+    position: absolute;
+    inset: auto -24px -38px auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    pointer-events: none;
+  }
+  .card.tips-card > * { position: relative; }
+
   .card:active {
     transform: scale(0.97);
   }
@@ -395,6 +412,13 @@
     <span class="card-emoji">🔎</span>
     <div class="card-title">이모티콘 시장 분석 TIP</div>
     <div class="card-desc">시장 분석 방법을 가볍게 읽고<br>원본 PDF도 바로 미리보기</div>
+    <div class="card-arrow"><span>보기 →</span></div>
+  </a>
+
+  <a class="card tips-card" href="tips.html">
+    <span class="card-emoji">💡</span>
+    <div class="card-title">꿀팁 리스트</div>
+    <div class="card-desc">노션에 정리한 이모티콘 팁을<br>가볍게 모아보기</div>
     <div class="card-arrow"><span>보기 →</span></div>
   </a>
 
