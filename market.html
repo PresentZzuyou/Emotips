@@ -230,73 +230,21 @@ body {
   background: var(--blue);
 }
 
-.pdf-viewer {
+.pdf-pages {
+  display: grid;
+  gap: 18px;
+}
+
+.pdf-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
   background: #fff;
   border: 1.5px solid var(--border);
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-
-.viewer-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border-bottom: 1.5px solid var(--border);
-  background: #fff;
-}
-
-.nav-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2px solid var(--dark);
-  background: var(--yellow);
-  color: var(--dark);
-  font-size: 28px;
-  font-weight: 900;
-  line-height: 1;
-  box-shadow: 2px 2px 0 var(--dark);
-  cursor: pointer;
-}
-
-.nav-btn:disabled {
-  opacity: 0.35;
-  cursor: default;
-  box-shadow: none;
-}
-
-.page-count {
-  color: var(--dark);
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.pdf-pages {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  touch-action: pan-x pan-y;
-}
-
-.pdf-pages::-webkit-scrollbar {
-  display: none;
-}
-
-.pdf-page {
-  flex: 0 0 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  background: #f7f7fa;
-  scroll-snap-align: center;
 }
 
 .pdf-page img {
@@ -387,14 +335,6 @@ body {
   .pdf-frame {
     height: 68vh;
   }
-  .viewer-toolbar {
-    padding: 10px 12px;
-  }
-  .nav-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 24px;
-  }
   .pdf-page {
     padding: 4px;
   }
@@ -436,58 +376,15 @@ body {
     </div>
   </section>
 
-  <section class="pdf-viewer" aria-label="이모티콘 시장분석 PDF 미리보기">
-    <div class="viewer-toolbar">
-      <button class="nav-btn" type="button" id="prevPage" aria-label="이전 페이지">‹</button>
-      <div class="page-count"><span id="currentPage">1</span> / <span id="totalPages">7</span></div>
-      <button class="nav-btn" type="button" id="nextPage" aria-label="다음 페이지">›</button>
-    </div>
-    <div class="pdf-pages" id="pdfPreview" tabindex="0">
-      <div class="pdf-page"><img src="assets/page-1.png" alt="이모티콘 시장분석 TIP PDF 1페이지"></div>
-      <div class="pdf-page"><img src="assets/page-2.png" alt="이모티콘 시장분석 TIP PDF 2페이지"></div>
-      <div class="pdf-page"><img src="assets/page-3.png" alt="이모티콘 시장분석 TIP PDF 3페이지"></div>
-      <div class="pdf-page"><img src="assets/page-4.png" alt="이모티콘 시장분석 TIP PDF 4페이지"></div>
-      <div class="pdf-page"><img src="assets/page-5.png" alt="이모티콘 시장분석 TIP PDF 5페이지"></div>
-      <div class="pdf-page"><img src="assets/page-6.png" alt="이모티콘 시장분석 TIP PDF 6페이지"></div>
-      <div class="pdf-page"><img src="assets/page-7.png" alt="이모티콘 시장분석 TIP PDF 7페이지"></div>
-    </div>
-  </section>
+  <div class="pdf-pages" id="pdfPreview">
+    <div class="pdf-page"><img src="assets/page-1.png" alt="이모티콘 시장분석 TIP PDF 1페이지"></div>
+    <div class="pdf-page"><img src="assets/page-2.png" alt="이모티콘 시장분석 TIP PDF 2페이지"></div>
+    <div class="pdf-page"><img src="assets/page-3.png" alt="이모티콘 시장분석 TIP PDF 3페이지"></div>
+    <div class="pdf-page"><img src="assets/page-4.png" alt="이모티콘 시장분석 TIP PDF 4페이지"></div>
+    <div class="pdf-page"><img src="assets/page-5.png" alt="이모티콘 시장분석 TIP PDF 5페이지"></div>
+    <div class="pdf-page"><img src="assets/page-6.png" alt="이모티콘 시장분석 TIP PDF 6페이지"></div>
+    <div class="pdf-page"><img src="assets/page-7.png" alt="이모티콘 시장분석 TIP PDF 7페이지"></div>
+  </div>
 </main>
-<script>
-  const preview = document.getElementById('pdfPreview');
-  const pages = Array.from(preview.querySelectorAll('.pdf-page'));
-  const currentPage = document.getElementById('currentPage');
-  const prevPage = document.getElementById('prevPage');
-  const nextPage = document.getElementById('nextPage');
-  let activeIndex = 0;
-
-  function goToPage(index) {
-    activeIndex = Math.max(0, Math.min(index, pages.length - 1));
-    pages[activeIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    updateControls();
-  }
-
-  function updateControls() {
-    currentPage.textContent = String(activeIndex + 1);
-    prevPage.disabled = activeIndex === 0;
-    nextPage.disabled = activeIndex === pages.length - 1;
-  }
-
-  function syncCurrentPage() {
-    const width = preview.clientWidth || 1;
-    activeIndex = Math.max(0, Math.min(Math.round(preview.scrollLeft / width), pages.length - 1));
-    updateControls();
-  }
-
-  prevPage.addEventListener('click', () => goToPage(activeIndex - 1));
-  nextPage.addEventListener('click', () => goToPage(activeIndex + 1));
-  preview.addEventListener('scroll', () => window.requestAnimationFrame(syncCurrentPage), { passive: true });
-  preview.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') goToPage(activeIndex - 1);
-    if (event.key === 'ArrowRight') goToPage(activeIndex + 1);
-  });
-
-  updateControls();
-</script>
 </body>
 </html>
