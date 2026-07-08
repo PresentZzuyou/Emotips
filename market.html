@@ -69,48 +69,21 @@ body {
 
 .page {
   width: 100%;
-  max-width: 980px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 26px 20px 72px;
+  padding: 22px 20px 72px;
 }
 
 .hero {
-  position: relative;
-  overflow: hidden;
-  background: var(--yellow);
-  border: 3px solid var(--dark);
-  border-radius: 20px;
-  padding: 28px 24px;
-  box-shadow: 7px 7px 0 var(--dark);
-  margin-bottom: 28px;
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(35,24,21,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(35,24,21,0.08) 1px, transparent 1px);
-  background-size: 18px 18px;
-  pointer-events: none;
-}
-
-.hero > * { position: relative; }
-
-.kicker {
-  display: inline-block;
-  background: #fff;
-  border: 2px solid var(--dark);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 900;
-  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
 }
 
 .hero h1 {
-  font-size: 40px;
+  font-size: 38px;
   line-height: 1.12;
   font-weight: 1000;
   letter-spacing: -1.2px;
@@ -118,16 +91,20 @@ body {
 
 .hero h1 span {
   color: var(--blue);
-  -webkit-text-stroke: 1.5px var(--dark);
-  text-shadow: 2px 2px 0 var(--dark);
+  -webkit-text-stroke: 1.2px var(--dark);
+  text-shadow: 1.5px 1.5px 0 var(--dark);
 }
 
-.hero p {
-  max-width: 660px;
-  margin-top: 12px;
-  font-size: 14px;
-  line-height: 1.7;
-  font-weight: 700;
+.hero-copy {
+  max-width: 640px;
+}
+
+.hero-desc {
+  margin-top: 8px;
+  color: var(--sub);
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 800;
   word-break: keep-all;
 }
 
@@ -135,7 +112,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
-  margin-top: 18px;
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .action-link {
@@ -316,7 +294,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
+  padding: 8px;
   background: #f7f7fa;
   scroll-snap-align: center;
 }
@@ -325,7 +303,7 @@ body {
   display: block;
   width: auto;
   max-width: 100%;
-  max-height: min(78vh, 860px);
+  max-height: min(82vh, 980px);
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.08);
@@ -364,15 +342,8 @@ body {
     padding: 18px 14px 48px;
   }
   .hero {
-    border-width: 2px;
-    border-radius: 18px;
-    padding: 21px 16px;
-    box-shadow: 4px 4px 0 var(--dark);
+    display: block;
     margin-bottom: 22px;
-  }
-  .kicker {
-    font-size: 10px;
-    padding: 5px 10px;
   }
   .hero h1 {
     font-size: 29px;
@@ -382,10 +353,14 @@ body {
     -webkit-text-stroke: 1px var(--dark);
     text-shadow: 1.5px 1.5px 0 var(--dark);
   }
-  .hero p,
+  .hero-desc,
   .section-desc,
   .check-list li {
     font-size: 13px;
+  }
+  .actions {
+    justify-content: stretch;
+    margin-top: 14px;
   }
   .action-link {
     flex: 1 1 140px;
@@ -422,10 +397,10 @@ body {
     font-size: 24px;
   }
   .pdf-page {
-    padding: 10px;
+    padding: 6px;
   }
   .pdf-page img {
-    max-height: 68vh;
+    max-height: 72vh;
   }
 }
 
@@ -437,7 +412,7 @@ body {
     height: 62vh;
   }
   .pdf-page img {
-    max-height: 64vh;
+    max-height: 68vh;
   }
 }
 </style>
@@ -456,8 +431,10 @@ body {
 
 <main class="page">
   <section class="hero">
-    <div class="kicker">이모티콘 승인 팁은? 이모팁스!</div>
-    <h1>이모티콘<br>시장분석 <span>TIP</span></h1>
+    <div class="hero-copy">
+      <h1>이모티콘<br>시장분석 <span>TIP</span></h1>
+      <p class="hero-desc">시장을 알아야 승인길이 보입니다. 시장 분석은 필수입니다.</p>
+    </div>
     <div class="actions">
       <a class="action-link" href="assets/emoticon-market-analysis-2026-06.pdf" download="이모팁스_이모티콘시장분석법.pdf">원본 PDF 다운로드</a>
     </div>
