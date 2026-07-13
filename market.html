@@ -232,6 +232,7 @@ body {
 
 .pdf-pages {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -250,7 +251,7 @@ body {
 .pdf-page img {
   display: block;
   width: 100%;
-  max-width: 1120px;
+  max-width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.08);
@@ -338,6 +339,9 @@ body {
   .pdf-page {
     padding: 4px;
   }
+  .pdf-pages {
+    grid-template-columns: 1fr;
+  }
   .pdf-page img {
     max-width: 100%;
   }
@@ -372,18 +376,17 @@ body {
       <p class="hero-desc">시장을 알아야 승인길이 보입니다. 시장 분석은 필수입니다.</p>
     </div>
     <div class="actions">
-      <a class="action-link" href="assets/emoticon-market-analysis-2026-06.pdf" download="이모팁스_이모티콘시장분석법.pdf">원본 PDF 다운로드</a>
+      <a class="action-link" href="assets/emoticon-market-analysis-2026-06.pdf" download="이모팁스_이모티콘시장분석법_1-3.pdf">시장분석 TIP 1~3 PDF 다운로드</a>
     </div>
   </section>
 
   <div class="pdf-pages" id="pdfPreview">
-    <div class="pdf-page"><img src="assets/page-1.png" alt="이모티콘 시장분석 TIP PDF 1페이지"></div>
-    <div class="pdf-page"><img src="assets/page-2.png" alt="이모티콘 시장분석 TIP PDF 2페이지"></div>
-    <div class="pdf-page"><img src="assets/page-3.png" alt="이모티콘 시장분석 TIP PDF 3페이지"></div>
-    <div class="pdf-page"><img src="assets/page-4.png" alt="이모티콘 시장분석 TIP PDF 4페이지"></div>
-    <div class="pdf-page"><img src="assets/page-5.png" alt="이모티콘 시장분석 TIP PDF 5페이지"></div>
-    <div class="pdf-page"><img src="assets/page-6.png" alt="이모티콘 시장분석 TIP PDF 6페이지"></div>
-    <div class="pdf-page"><img src="assets/page-7.png" alt="이모티콘 시장분석 TIP PDF 7페이지"></div>
+    <div class="pdf-page"><img src="assets/market-tip-main.jpg" alt="이모티콘 시장분석 TIP 표지"></div>
+    <div class="pdf-page"><img src="assets/market-tip-1.jpg" alt="이모티콘 시장분석 TIP 1"></div>
+    <div class="pdf-page"><img src="assets/market-tip-2.jpg" alt="이모티콘 시장분석 TIP 2"></div>
+    <div class="pdf-page"><img src="assets/market-tip-2-1.jpg" alt="이모티콘 시장분석 TIP 2-1"></div>
+    <div class="pdf-page"><img src="assets/market-tip-3.jpg" alt="이모티콘 시장분석 TIP 3"></div>
+    <div class="pdf-page"><img src="assets/market-tip-3-1.jpg" alt="이모티콘 시장분석 TIP 3-1"></div>
   </div>
 </main>
 </body>
