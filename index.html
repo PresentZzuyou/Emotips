@@ -238,6 +238,25 @@
   }
   .card.tips-card > * { position: relative; }
 
+  .card.prompt-card {
+    background: #008c72;
+    position: relative;
+    overflow: hidden;
+  }
+  .card.prompt-card::before {
+    content: none;
+  }
+  .card.prompt-card > * { position: relative; }
+  .card.prompt-card .card-title,
+  .card.prompt-card .card-desc {
+    color: #fff;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+  }
+  .card.prompt-card .card-arrow span {
+    background: rgba(255,255,255,0.22);
+    color: #fff;
+  }
+
   .card:active {
     transform: scale(0.97);
   }
@@ -419,6 +438,13 @@
     <span class="card-emoji">💡</span>
     <div class="card-title">자주 묻는 질문</div>
     <div class="card-desc">자주 묻는 질문 리스트를<br>확인하기</div>
+    <div class="card-arrow"><span>보기 →</span></div>
+  </a>
+
+  <a class="card prompt-card" href="https://app.notion.com/p/3a6f856893708059a007c0b75ed6e55d?source=copy_link" target="_blank" rel="noreferrer">
+    <span class="card-emoji">✍️</span>
+    <div class="card-title">이모팁스 프롬프트 목록</div>
+    <div class="card-desc">이모팁스의 꿀팁을 담은<br>프롬프트 모아보기</div>
     <div class="card-arrow"><span>보기 →</span></div>
   </a>
 
