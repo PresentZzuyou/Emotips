@@ -1577,8 +1577,14 @@ window.addEventListener('resize', checkScroll);
   document.getElementById('mmModalSave').addEventListener('click', saveModal);
   document.getElementById('mmModalCancel').addEventListener('click', closeModal);
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  modalInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveModal();
+    if (e.key === 'Escape') closeModal();
+  });
+  modalTextarea.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
   overlay.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey && activeNodeIdx !== null && !NODES[activeNodeIdx].isTextarea) saveModal();
     if (e.key === 'Escape') closeModal();
   });
 })();
