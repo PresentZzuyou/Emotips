@@ -695,65 +695,31 @@ body {
     <div class="step-header">
       <div class="step-num">STEP 01</div>
       <div class="step-title">🧠 나인드맵 그리기</div>
-      <div class="step-desc">나에 대해 솔직하게 적어보세요. 많이 쓸수록 더 '나다운' 이모티콘이 나와요!<br>여러 개를 적을 때는 반드시 <strong>쉼표(,)로 구분</strong>해주세요. 쉼표로 구분하지 않으면 키워드가 하나로 합쳐져요.</div>
+      <div class="step-desc">나에 대해 솔직하게 적어보세요. 많이 쓸수록 더 '나다운' 이모티콘이 나와요!<br>여러 개를 적을 때는 반드시 <strong>쉼표(,)로 구분</strong>해주세요.</div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label" for="q1">나이 / 연령대</label>
-      <input class="form-input" id="q1" type="text" placeholder="예) 20대 초반, 30대 중반">
+    <div class="mindmap-wrap">
+      <div class="mindmap-container" id="mindmapContainer">
+        <svg class="mindmap-svg" id="mindmapSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="mm-center">나</div>
+      </div>
+      <p class="mindmap-hint">항목을 눌러 입력하세요 · 여러 개는 쉼표(,)로 구분</p>
     </div>
-    <div class="form-group">
-      <label class="form-label" for="q2">직업</label>
-      <input class="form-input" id="q2" type="text" placeholder="예) 대학생, 직장인, 프리랜서">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q3">내 성격</label>
-      <input class="form-input" id="q3" type="text" placeholder="예) 내향적, 활발함, 꼼꼼함, 덤벙댐">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q4">가족관계</label>
-      <input class="form-input" id="q4" type="text" placeholder="예) 외동, 3남매 중 막내, 1남 1녀 중 첫째">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q5">연인이 있나요?</label>
-      <input class="form-input" id="q5" type="text" placeholder="예) 솔로, 연애중, 기혼">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q6">친구들 사이에서 나는?</label>
-      <input class="form-input" id="q6" type="text" placeholder="예) 분위기 메이커, 조용한 편, 리더형">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q7">관심사</label>
-      <input class="form-input" id="q7" type="text" placeholder="예) 뷰티, 게임, 여행, 카페 탐방">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q8">취미</label>
-      <input class="form-input" id="q8" type="text" placeholder="예) 그림 그리기, 독서, 요리, 유튜브 보기">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q11">추구미</label>
-      <input class="form-input" id="q11" type="text" placeholder="예) 힐링, 귀여움, 시크함, 병맛, 감성적">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q13">좋아하는 동물</label>
-      <input class="form-input" id="q13" type="text" placeholder="예) 고양이, 강아지, 토끼, 곰">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q10">나의 웃음 포인트</label>
-      <input class="form-input" id="q10" type="text" placeholder="예) 아재개그, 공감 유머, 황당한 상황">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q12">이모티콘을 사용하는 이유</label>
-      <input class="form-input" id="q12" type="text" placeholder="예) 감정 표현이 편해서, 대화가 재밌어서">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q9">자주 쓰는 이모티콘 스타일</label>
-      <input class="form-input" id="q9" type="text" placeholder="예) 귀여운 캐릭터형, 텍스트형, 짤방형">
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="q14">그 외 키워드를 자유롭게 적어주세요.</label>
-      <textarea class="form-textarea" id="q14" placeholder="예) 퇴근, 야식, 집순이, 칼퇴, MBTI&#10;떠오르는 단어를 자유롭게 쉼표로 구분지어 적어주세요."></textarea>
-    </div>
+
+    <input type="hidden" id="q1">
+    <input type="hidden" id="q2">
+    <input type="hidden" id="q3">
+    <input type="hidden" id="q4">
+    <input type="hidden" id="q5">
+    <input type="hidden" id="q6">
+    <input type="hidden" id="q7">
+    <input type="hidden" id="q8">
+    <input type="hidden" id="q9">
+    <input type="hidden" id="q10">
+    <input type="hidden" id="q11">
+    <input type="hidden" id="q12">
+    <input type="hidden" id="q13">
+    <input type="hidden" id="q14">
   </div>
 
   <!-- STEP 2: 키워드 도출 -->
