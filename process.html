@@ -1452,6 +1452,136 @@ function checkScroll() {
 
 window.addEventListener('scroll', checkScroll, { passive: true });
 window.addEventListener('resize', checkScroll);
+
+// ── 마인드맵 ──
+(function() {
+  const NODES = [
+    { id:'q1',  label:'나이',           placeholder:'예) 20대 초반, 30대 중반' },
+    { id:'q2',  label:'직업',           placeholder:'예) 대학생, 직장인, 프리랜서' },
+    { id:'q3',  label:'성격',           placeholder:'예) 내향적, 활발함, 꼼꼼함' },
+    { id:'q4',  label:'가족관계',       placeholder:'예) 외동, 3남매 중 막내' },
+    { id:'q5',  label:'연인',           placeholder:'예) 솔로, 연애중, 기혼' },
+    { id:'q6',  label:'친구 사이에서',  placeholder:'예) 분위기 메이커, 리더형' },
+    { id:'q7',  label:'관심사',         placeholder:'예) 뷰티, 게임, 여행' },
+    { id:'q8',  label:'취미',           placeholder:'예) 그림 그리기, 독서' },
+    { id:'q11', label:'추구미',         placeholder:'예) 힐링, 귀여움, 시크함' },
+    { id:'q13', label:'좋아하는 동물',  placeholder:'예) 고양이, 강아지, 토끼' },
+    { id:'q10', label:'웃음 포인트',    placeholder:'예) 아재개그, 공감 유머' },
+    { id:'q12', label:'이모티콘 이유',  placeholder:'예) 감정 표현이 편해서' },
+    { id:'q9',  label:'이모티콘 스타일',placeholder:'예) 귀여운 캐릭터형, 텍스트형' },
+    { id:'q14', label:'자유 키워드',    placeholder:'예) 퇴근, 야식, 집순이, MBTI', isTextarea: true },
+  ];
+
+  const container = document.getElementById('mindmapContainer');
+  const svg = document.getElementById('mindmapSvg');
+  let activeNodeIdx = null;
+
+  // 노드 DOM 생성
+  NODES.forEach((n, i) => {
+    const el = document.createElement('div');
+    el.className = 'mm-node';
+    el.id = 'mmNode_' + i;
+    el.innerHTML = `<span class="mm-label">${n.label}</span>`;
+    el.addEventListener('click', () => openModal(i));
+    container.appendChild(el);
+  });
+
+  function positionNodes() {
+    const W = container.offsetWidth;
+    const H = container.offsetHeight;
+    const cx = W / 2, cy = H / 2;
+    const rx = W * 0.40, ry = H * 0.42;
+    const total = NODES.length;
+
+    svg.innerHTML = '';
+    NODES.forEach((_, i) => {
+      const angle = (2 * Math.PI * i / total) - Math.PI / 2;
+      const nx = cx + rx * Math.cos(angle);
+      const ny = cy + ry * Math.sin(angle);
+      const el = document.getElementById('mmNode_' + i);
+      el.style.left = nx + 'px';
+      el.style.top  = ny + 'px';
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', nx); line.setAttribute('y2', ny);
+      line.setAttribute('stroke', '#d0d0d0');
+      line.setAttribute('stroke-width', '1.5');
+      svg.appendChild(line);
+    });
+  }
+
+  positionNodes();
+  window.addEventListener('resize', positionNodes);
+
+  // 모달
+  const overlay = document.createElement('div');
+  overlay.className = 'mm-modal-overlay';
+  overlay.innerHTML = `
+    <div class="mm-modal">
+      <div class="mm-modal-title" id="mmModalTitle"></div>
+      <input class="mm-modal-input" id="mmModalInput" type="text">
+      <textarea class="mm-modal-textarea" id="mmModalTextarea" style="display:none"></textarea>
+      <div class="mm-modal-hint">여러 개는 쉼표(,)로 구분해 주세요</div>
+      <div class="mm-modal-btns">
+        <button class="mm-modal-cancel" id="mmModalCancel">취소</button>
+        <button class="mm-modal-save"   id="mmModalSave">저장</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  const modalTitle    = document.getElementById('mmModalTitle');
+  const modalInput    = document.getElementById('mmModalInput');
+  const modalTextarea = document.getElementById('mmModalTextarea');
+  const modalHint     = overlay.querySelector('.mm-modal-hint');
+
+  function openModal(idx) {
+    activeNodeIdx = idx;
+    const n = NODES[idx];
+    modalTitle.textContent = n.label;
+    const isTA = !!n.isTextarea;
+    modalInput.style.display    = isTA ? 'none' : '';
+    modalTextarea.style.display = isTA ? '' : 'none';
+    modalHint.style.display     = isTA ? '' : '';
+    const val = document.getElementById(n.id).value;
+    if (isTA) { modalTextarea.placeholder = n.placeholder; modalTextarea.value = val; }
+    else       { modalInput.placeholder    = n.placeholder; modalInput.value    = val; }
+    overlay.classList.add('open');
+    setTimeout(() => (isTA ? modalTextarea : modalInput).focus(), 50);
+  }
+
+  function saveModal() {
+    if (activeNodeIdx === null) return;
+    const n = NODES[activeNodeIdx];
+    const isTA = !!n.isTextarea;
+    const val = (isTA ? modalTextarea : modalInput).value.trim();
+    document.getElementById(n.id).value = val;
+
+    const el = document.getElementById('mmNode_' + activeNodeIdx);
+    if (val) {
+      el.classList.add('filled');
+      el.innerHTML = `<span class="mm-label">${n.label}</span><span class="mm-value">${val}</span>`;
+    } else {
+      el.classList.remove('filled');
+      el.innerHTML = `<span class="mm-label">${n.label}</span>`;
+    }
+    el.addEventListener('click', () => openModal(activeNodeIdx));
+    closeModal();
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    activeNodeIdx = null;
+  }
+
+  document.getElementById('mmModalSave').addEventListener('click', saveModal);
+  document.getElementById('mmModalCancel').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  overlay.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey && activeNodeIdx !== null && !NODES[activeNodeIdx].isTextarea) saveModal();
+    if (e.key === 'Escape') closeModal();
+  });
+})();
 </script>
 </body>
 </html>
