@@ -667,6 +667,145 @@ body {
   .example-box { break-inside: avoid; }
   .ment-list { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── 마인드맵 ── */
+.mindmap-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px 0 4px;
+}
+.mindmap-container {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 4/3;
+}
+.mindmap-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.mm-center {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #0b8bff;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  box-shadow: 0 3px 12px rgba(11,139,255,.35);
+  z-index: 2;
+}
+.mm-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  z-index: 2;
+  white-space: nowrap;
+  max-width: 110px;
+  text-align: center;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.mm-node:hover { border-color: #0b8bff; box-shadow: 0 2px 8px rgba(11,139,255,.2); }
+.mm-node.filled { border-color: #0b8bff; background: #f0f7ff; }
+.mm-node .mm-label { font-size: 11px; color: #666; }
+.mm-node .mm-value { font-size: 11px; color: #0b8bff; white-space: normal; word-break: break-all; text-align: center; max-width: 100px; }
+.mm-node.filled .mm-label { font-size: 10px; }
+.mindmap-hint { font-size: 12px; color: var(--sub); margin-top: 10px; }
+
+/* 마인드맵 모달 */
+.mm-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.mm-modal-overlay.open { display: flex; }
+.mm-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px 20px;
+  width: min(92%, 400px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mm-modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+.mm-modal-input, .mm-modal-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color .2s;
+}
+.mm-modal-input:focus, .mm-modal-textarea:focus { border-color: #0b8bff; }
+.mm-modal-textarea { min-height: 80px; }
+.mm-modal-hint { font-size: 12px; color: var(--sub); margin-top: -6px; }
+.mm-modal-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.mm-modal-cancel {
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.mm-modal-save {
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  background: #0b8bff;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+@media (max-width: 480px) {
+  .mm-node { font-size: 10px; padding: 4px 8px; max-width: 88px; }
+  .mm-center { width: 48px; height: 48px; font-size: 17px; }
+}
 </style>
 </head>
 <body>
