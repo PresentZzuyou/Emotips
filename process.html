@@ -229,8 +229,18 @@ body {
 
 .export-actions {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   justify-content: center;
   margin-top: 0;
+}
+.export-mobile-note {
+  display: none;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--sub);
+  text-align: center;
 }
 .export-jpg-btn {
   border: 2px solid var(--blue);
@@ -845,6 +855,9 @@ body {
   font-family: inherit;
 }
 @media (max-width: 480px) {
+  .export-mobile-note {
+    display: block;
+  }
   .mindmap-container {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -897,6 +910,7 @@ body {
     </div>
 
     <div class="export-actions">
+      <div class="export-mobile-note">모바일에서는 저장된 이미지가 열리면 이미지를 꾹 눌러 저장해주세요.</div>
       <button class="export-jpg-btn" type="button" onclick="downloadMindmapJpg()">🖼️ 나인드맵 JPG 저장</button>
     </div>
 
