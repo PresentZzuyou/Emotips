@@ -126,7 +126,7 @@ body {
 .content-wrap {
   max-width: 720px;
   margin: 0 auto;
-  padding: 24px 20px 120px;
+  padding: 24px 20px 28px;
 }
 
 .step-section { display: none; }
@@ -225,6 +225,33 @@ body {
   font-size: 13px;
   color: #bbb;
   font-style: italic;
+}
+
+.export-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+}
+.export-jpg-btn {
+  border: 2px solid var(--blue);
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--blue);
+  padding: 11px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--blue);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.export-jpg-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 0 var(--blue);
+}
+.export-jpg-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--blue);
 }
 
 /* ── 섹션 구분 ── */
@@ -574,20 +601,24 @@ body {
 
 /* ── 하단 내비게이션 ── */
 .nav-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
+  position: sticky;
+  bottom: 0;
+  left: auto;
+  right: auto;
   background: #fff;
   border-top: 1px solid var(--border);
   padding: 12px 20px;
   display: flex;
   gap: 10px;
+  width: 100%;
   max-width: 720px;
   margin: 0 auto;
-  transform: translateY(100%);
+  z-index: 50;
+  transform: none;
   transition: transform 0.3s ease;
 }
 .nav-bar.visible {
-  transform: translateY(0);
+  transform: none;
 }
 .btn-nav {
   flex: 1;
@@ -678,9 +709,16 @@ body {
 .mindmap-container {
   position: relative;
   width: 100%;
-  max-width: 640px;
-  aspect-ratio: 4/3;
-  margin-bottom: 48px;
+  max-width: 720px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 34px;
+  overflow: visible;
+}
+.mindmap-container .mindmap-svg,
+.mindmap-container .mm-center {
+  display: none;
 }
 .mindmap-svg {
   position: absolute;
@@ -709,31 +747,34 @@ body {
   z-index: 2;
 }
 .mm-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
+  position: relative;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
+  min-height: auto;
   background: #fff;
   border: 2px solid #e0e0e0;
-  border-radius: 20px;
-  padding: 5px 10px;
+  border-radius: 16px;
+  padding: 11px 13px;
   font-size: 12px;
   font-weight: 600;
   color: #333;
   cursor: pointer;
   z-index: 2;
-  white-space: nowrap;
-  max-width: 110px;
-  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  text-align: left;
   transition: border-color .2s, box-shadow .2s, background .2s;
   line-height: 1.3;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 2px;
 }
 .mm-node:hover { border-color: #0b8bff; box-shadow: 0 2px 8px rgba(11,139,255,.2); }
 .mm-node.filled { border-color: #0b8bff; background: #f0f7ff; }
 .mm-node .mm-label { font-size: 11px; color: #666; }
-.mm-node .mm-value { font-size: 11px; color: #0b8bff; white-space: normal; word-break: break-all; text-align: center; max-width: 100px; }
+.mm-node .mm-value { font-size: 11px; color: #0b8bff; white-space: normal; word-break: keep-all; overflow-wrap: anywhere; text-align: left; max-width: none; }
 .mm-node.filled .mm-label { font-size: 10px; }
 .mindmap-hint { font-size: 12px; color: var(--sub); margin-top: 10px; }
 
@@ -804,7 +845,17 @@ body {
   font-family: inherit;
 }
 @media (max-width: 480px) {
-  .mm-node { font-size: 10px; padding: 4px 8px; max-width: 88px; }
+  .mindmap-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 4px;
+    margin-bottom: 32px;
+  }
+  .mm-node {
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+  .mm-node .mm-label { font-size: 10px; }
   .mm-center { width: 48px; height: 48px; font-size: 17px; }
 }
 </style>
@@ -843,6 +894,10 @@ body {
         <svg class="mindmap-svg" id="mindmapSvg" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="mm-center">나</div>
       </div>
+    </div>
+
+    <div class="export-actions">
+      <button class="export-jpg-btn" type="button" onclick="downloadMindmapJpg()">🖼️ 나인드맵 JPG 저장</button>
     </div>
 
     <input type="hidden" id="q1">
@@ -1203,7 +1258,7 @@ body {
 </div><!-- /content-wrap -->
 
 <!-- 하단 버튼 -->
-<div class="nav-bar" style="left:50%;transform:translateX(-50%);max-width:720px;">
+<div class="nav-bar">
   <button class="btn-nav btn-prev" id="btnPrev" onclick="prevStep()">← 이전</button>
   <button class="btn-nav btn-next" id="btnNext" onclick="nextStep()">다음 →</button>
   <button class="btn-nav btn-pdf" id="btnPdf" style="display:none" onclick="printPdf()">📄 PDF 저장</button>
@@ -1312,6 +1367,158 @@ function renderKeywordPreview() {
     return;
   }
   preview.innerHTML = keywords.map(k => `<div class="chip">${k}</div>`).join('');
+}
+
+function getMindmapRows() {
+  return [
+    ['나이', 'q1'],
+    ['직업', 'q2'],
+    ['성격', 'q3'],
+    ['가족관계', 'q4'],
+    ['연인', 'q5'],
+    ['나의 대화 포지션', 'q6'],
+    ['관심사', 'q7'],
+    ['취미', 'q8'],
+    ['이모티콘 스타일', 'q9'],
+    ['웃음 포인트', 'q10'],
+    ['추구미', 'q11'],
+    ['이모티콘 사용이유', 'q12'],
+    ['좋아하는 동물', 'q13'],
+    ['그 외 키워드', 'q14']
+  ].map(([label, id]) => {
+    const raw = (document.getElementById(id)?.value || '').trim();
+    const values = raw
+      ? raw.split(/[,，、]+/).map(v => v.trim()).filter(Boolean)
+      : [];
+    return { label, values };
+  });
+}
+
+function wrapCanvasText(ctx, text, maxWidth) {
+  const words = String(text || '').split(/\s+/).filter(Boolean);
+  const lines = [];
+  let current = '';
+
+  function pushByChar(value) {
+    let line = '';
+    [...value].forEach(ch => {
+      const test = line + ch;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = ch;
+      } else {
+        line = test;
+      }
+    });
+    if (line) lines.push(line);
+  }
+
+  words.forEach(word => {
+    const test = current ? current + ' ' + word : word;
+    if (ctx.measureText(test).width <= maxWidth) {
+      current = test;
+      return;
+    }
+    if (current) {
+      lines.push(current);
+      current = '';
+    }
+    if (ctx.measureText(word).width > maxWidth) pushByChar(word);
+    else current = word;
+  });
+  if (current) lines.push(current);
+  return lines.length ? lines : [''];
+}
+
+function roundRectPath(ctx, x, y, w, h, r) {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + w - radius, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+  ctx.lineTo(x + w, y + h - radius);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+  ctx.lineTo(x + radius, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
+function drawRoundedRect(ctx, x, y, w, h, r, fill, stroke = null, lineWidth = 1) {
+  roundRectPath(ctx, x, y, w, h, r);
+  ctx.fillStyle = fill;
+  ctx.fill();
+  if (stroke) {
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+  }
+}
+
+function downloadMindmapJpg() {
+  const rows = getMindmapRows();
+  const scale = 2;
+  const width = 1080;
+  const margin = 56;
+  const gap = 18;
+  const columns = 2;
+  const cardW = (width - margin * 2 - gap) / columns;
+  const titleH = 126;
+  const footerH = 58;
+  const ctxMeasure = document.createElement('canvas').getContext('2d');
+  ctxMeasure.font = '700 30px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
+
+  const cards = rows.map(row => {
+    const text = row.values.length ? row.values.join(', ') : '미작성';
+    const lines = wrapCanvasText(ctxMeasure, text, cardW - 48);
+    return { ...row, text, lines, h: 92 + lines.length * 34 };
+  });
+  const rowHeights = [];
+  for (let i = 0; i < cards.length; i += columns) {
+    rowHeights.push(Math.max(cards[i].h, cards[i + 1]?.h || 0));
+  }
+  const height = titleH + rowHeights.reduce((sum, h) => sum + h, 0) + gap * (rowHeights.length - 1) + footerH + margin;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = '#231815';
+  ctx.font = '900 44px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
+  ctx.fillText('나인드맵 키워드 정리', margin, 68);
+  ctx.fillStyle = '#777';
+  ctx.font = '700 22px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
+  ctx.fillText('이모팁스 제작 프로세스 STEP 1', margin, 104);
+
+  let y = titleH;
+  cards.forEach((card, i) => {
+    const col = i % columns;
+    if (col === 0 && i > 0) y += rowHeights[Math.floor((i - 1) / columns)] + gap;
+    const x = margin + col * (cardW + gap);
+    drawRoundedRect(ctx, x, y, cardW, card.h, 22, '#f7f9fb', '#e7ebf0', 2);
+    ctx.fillStyle = '#0b8bff';
+    ctx.font = '900 24px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
+    ctx.fillText(card.label, x + 24, y + 38);
+    ctx.fillStyle = card.values.length ? '#231815' : '#a8adb5';
+    ctx.font = '700 30px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
+    card.lines.forEach((line, lineIdx) => {
+      ctx.fillText(line, x + 24, y + 84 + lineIdx * 34);
+    });
+  });
+
+  ctx.fillStyle = '#9a9a9a';
+  ctx.font = '700 20px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
+  ctx.fillText('EMOTIPS', margin, height - 34);
+
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/jpeg', 0.94);
+  link.download = '이모팁스_나인드맵_키워드정리.jpg';
+  link.click();
 }
 
 function updateSelectedCount() {
@@ -1461,7 +1668,7 @@ window.addEventListener('resize', checkScroll);
     { id:'q3',  label:'성격',           placeholder:'예) 내향적, 활발함, 꼼꼼함' },
     { id:'q4',  label:'가족관계',       placeholder:'예) 외동, 3남매 중 막내' },
     { id:'q5',  label:'연인',           placeholder:'예) 솔로, 연애중, 기혼' },
-    { id:'q6',  label:'친구 사이에서',  placeholder:'예) 분위기 메이커, 리더형' },
+    { id:'q6',  label:'나의 대화 포지션', placeholder:'예) 분위기 메이커, 리더형' },
     { id:'q7',  label:'관심사',         placeholder:'예) 뷰티, 게임, 여행' },
     { id:'q8',  label:'취미',           placeholder:'예) 그림 그리기, 독서' },
     { id:'q11', label:'추구미',         placeholder:'예) 힐링, 귀여움, 시크함' },
@@ -1487,27 +1694,11 @@ window.addEventListener('resize', checkScroll);
   });
 
   function positionNodes() {
-    const W = container.offsetWidth;
-    const H = container.offsetHeight;
-    const cx = W / 2, cy = H / 2;
-    const rx = W * 0.38, ry = H * 0.34;
-    const total = NODES.length;
-
     svg.innerHTML = '';
     NODES.forEach((_, i) => {
-      const angle = (2 * Math.PI * i / total) - Math.PI / 2;
-      const nx = cx + rx * Math.cos(angle);
-      const ny = cy + ry * Math.sin(angle);
       const el = document.getElementById('mmNode_' + i);
-      el.style.left = nx + 'px';
-      el.style.top  = ny + 'px';
-
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
-      line.setAttribute('x2', nx); line.setAttribute('y2', ny);
-      line.setAttribute('stroke', '#d0d0d0');
-      line.setAttribute('stroke-width', '1.5');
-      svg.appendChild(line);
+      el.style.left = '';
+      el.style.top = '';
     });
   }
 
@@ -1565,6 +1756,7 @@ window.addEventListener('resize', checkScroll);
       el.classList.remove('filled');
       el.innerHTML = `<span class="mm-label">${n.label}</span>`;
     }
+    positionNodes();
     el.addEventListener('click', () => openModal(activeNodeIdx));
     closeModal();
   }
