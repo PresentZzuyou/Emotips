@@ -1456,7 +1456,22 @@ function drawRoundedRect(ctx, x, y, w, h, r, fill, stroke = null, lineWidth = 1)
   }
 }
 
-function downloadMindmapJpg() {
+function canvasToJpgBlob(canvas, quality = 0.94) {
+  return new Promise(resolve => {
+    if (canvas.toBlob) {
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', quality);
+      return;
+    }
+    const dataUrl = canvas.toDataURL('image/jpeg', quality);
+    const byteString = atob(dataUrl.split(',')[1]);
+    const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0];
+    const bytes = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) bytes[i] = byteString.charCodeAt(i);
+    resolve(new Blob([bytes], { type: mimeString }));
+  });
+}
+
+async function downloadMindmapJpg() {
   const rows = getMindmapRows();
   const scale = 2;
   const width = 1080;
@@ -1515,10 +1530,49 @@ function downloadMindmapJpg() {
   ctx.font = '700 20px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
   ctx.fillText('EMOTIPS', margin, height - 34);
 
+  const isTouchDevice = window.matchMedia && window.matchMedia('(hover: none)').matches;
+  const previewWindow = isTouchDevice ? window.open('', '_blank') : null;
+  const fileName = '이모팁스_나인드맵_키워드정리.jpg';
+  const blob = await canvasToJpgBlob(canvas, 0.94);
+  if (!blob) {
+    if (previewWindow) previewWindow.close();
+    alert('JPG 저장을 다시 시도해주세요.');
+    return;
+  }
+
+  const file = new File([blob], fileName, { type: 'image/jpeg' });
+  let canShareFile = false;
+  try {
+    canShareFile = !!(navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share);
+  } catch (err) {
+    canShareFile = false;
+  }
+
+  if (canShareFile) {
+    try {
+      await navigator.share({ files: [file], title: '나인드맵 키워드 정리' });
+      if (previewWindow) previewWindow.close();
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
-  link.href = canvas.toDataURL('image/jpeg', 0.94);
-  link.download = '이모팁스_나인드맵_키워드정리.jpg';
+  link.href = url;
+  link.download = fileName;
+  link.rel = 'noopener';
+  document.body.appendChild(link);
   link.click();
+  link.remove();
+
+  if (previewWindow) {
+    previewWindow.location.href = url;
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  } else {
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+  }
 }
 
 function updateSelectedCount() {
