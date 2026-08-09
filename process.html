@@ -1544,34 +1544,23 @@ async function downloadMindmapJpg() {
   ctx.font = '700 20px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
   ctx.fillText('EMOTIPS', margin, height - 34);
 
-  const isTouchDevice = window.matchMedia && window.matchMedia('(hover: none)').matches;
-  const previewWindow = isTouchDevice ? window.open('', '_blank') : null;
   const fileName = '이모팁스_나인드맵_키워드정리.jpg';
   const blob = await canvasToJpgBlob(canvas, 0.94);
-  if (!blob) {
-    if (previewWindow) previewWindow.close();
-    alert('JPG 저장을 다시 시도해주세요.');
-    return;
-  }
+  if (!blob) { alert('JPG 저장을 다시 시도해주세요.'); return; }
 
   const file = new File([blob], fileName, { type: 'image/jpeg' });
-  let canShareFile = false;
+
+  // 모바일: Web Share API 우선
   try {
-    canShareFile = !!(navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share);
-  } catch (err) {
-    canShareFile = false;
-  }
-
-  if (canShareFile) {
-    try {
+    if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
       await navigator.share({ files: [file], title: '나인드맵 키워드 정리' });
-      if (previewWindow) previewWindow.close();
       return;
-    } catch (err) {
-      if (err && err.name === 'AbortError') return;
     }
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
   }
 
+  // 데스크탑 / 폴백: 다운로드 링크
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
@@ -1580,13 +1569,7 @@ async function downloadMindmapJpg() {
   document.body.appendChild(link);
   link.click();
   link.remove();
-
-  if (previewWindow) {
-    previewWindow.location.href = url;
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
-  } else {
-    setTimeout(() => URL.revokeObjectURL(url), 3000);
-  }
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
 function updateSelectedCount() {
