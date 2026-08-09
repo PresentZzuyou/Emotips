@@ -1544,23 +1544,29 @@ async function downloadMindmapJpg() {
   ctx.font = '700 20px Apple SD Gothic Neo, Malgun Gothic, sans-serif';
   ctx.fillText('EMOTIPS', margin, height - 34);
 
+  const isSafariMobile = /iP(hone|ad|od)/.test(navigator.userAgent);
+
+  // iOS 사파리: 새 탭에 이미지 열기 (길게 눌러 저장)
+  // window.open은 async 전에 호출해야 팝업 차단 안 됨
+  const previewWin = isSafariMobile ? window.open('', '_blank') : null;
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+  if (!dataUrl || dataUrl === 'data:,') {
+    if (previewWin) previewWin.close();
+    alert('JPG 저장을 다시 시도해주세요.');
+    return;
+  }
+
+  if (previewWin) {
+    previewWin.document.write(`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>나인드맵 저장</title><style>body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;padding:16px;box-sizing:border-box}img{width:100%;border-radius:12px}p{color:#fff;font-size:15px;font-family:sans-serif;text-align:center;margin-top:14px;line-height:1.6}</style></head><body><img src="${dataUrl}"><p>이미지를 <strong>길게 눌러</strong><br>사진첩에 저장하세요 📷</p></body></html>`);
+    previewWin.document.close();
+    return;
+  }
+
+  // 데스크탑: 다운로드 링크
   const fileName = '이모팁스_나인드맵_키워드정리.jpg';
   const blob = await canvasToJpgBlob(canvas, 0.94);
   if (!blob) { alert('JPG 저장을 다시 시도해주세요.'); return; }
-
-  const file = new File([blob], fileName, { type: 'image/jpeg' });
-
-  // 모바일: Web Share API 우선
-  try {
-    if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-      await navigator.share({ files: [file], title: '나인드맵 키워드 정리' });
-      return;
-    }
-  } catch (err) {
-    if (err && err.name === 'AbortError') return;
-  }
-
-  // 데스크탑 / 폴백: 다운로드 링크
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
