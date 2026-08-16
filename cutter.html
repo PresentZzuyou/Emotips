@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이모티콘 한 판 컷팅기 · 이모팁스</title>
+<meta property="og:title" content="이모티콘 한 판 컷팅기 · 이모팁스">
+<meta property="og:description" content="멈춰있는 카카오톡 이모티콘 한판 이미지를 컷팅하고 순서를 바꿔 저장해보세요.">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --ink: #231815;
+    --muted: #888;
+    --blue: #0b8bff;
+    --red: #e84c3d;
+    --green: #00a969;
+    --yellow: #faff32;
+    --paper: #fff;
+    --gray: #f5f5f8;
+    --line: #e8e8ee;
+    --soft: rgba(11,139,255,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #fff;
+    color: var(--ink);
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 0 16px 48px;
+  }
+
+  .app { width: 100%; max-width: 1220px; margin: 0 auto; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 -16px 22px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .privacy {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .hero {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 10px 28px rgba(35,24,21,0.06);
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: "✂";
+    position: absolute;
+    right: 16px;
+    bottom: -42px;
+    font-size: 150px;
+    font-weight: 900;
+    color: rgba(11,139,255,0.08);
+    transform: rotate(-10deg);
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 4vw, 40px);
+    letter-spacing: -1.2px;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero p {
+    max-width: 720px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.65;
+    color: var(--muted);
+    word-break: keep-all;
+    position: relative;
+    z-index: 1;
+  }
+
+  .workflow {
+    background: linear-gradient(135deg, rgba(11,139,255,0.10), rgba(0,169,105,0.07));
+    border: 1.5px solid rgba(11,139,255,0.22);
+    border-radius: 16px;
+    padding: 15px 17px;
+    box-shadow: 0 8px 22px rgba(11,139,255,0.065);
+    margin-bottom: 16px;
+  }
+
+  .workflow h2 {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    margin-bottom: 6px;
+  }
+
+  .workflow p {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .panel {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(35,24,21,0.045);
+  }
+
+  .panel + .panel { margin-top: 14px; }
+
+  .save-panel { grid-column: 1 / -1; }
+
+  .tool-panel { min-width: 0; }
+
+  .panel h2 {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    margin-bottom: 12px;
+  }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .mode {
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    padding: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.15s ease;
+  }
+
+  .mode.active {
+    border-color: var(--blue);
+    background: var(--soft);
+    box-shadow: none;
+  }
+
+  .mode strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .mode span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .upload-row {
+    display: grid;
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    gap: 14px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+
+  .drop {
+    display: block;
+    width: 100%;
+    border: 1.5px dashed var(--blue);
+    border-radius: 16px;
+    background: rgba(11,139,255,0.07);
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.15s ease;
+  }
+
+  .drop.dragover,
+  .drop:hover {
+    transform: translateY(-2px);
+    background: rgba(11,139,255,0.13);
+  }
+
+  .drop .emoji { font-size: 34px; margin-bottom: 8px; }
+  .drop strong { display: block; font-size: 14px; margin-bottom: 4px; }
+  .drop span { display: block; font-size: 12px; color: var(--muted); font-weight: 700; line-height: 1.45; }
+
+  input[type=file] { display: none; }
+
+  .file-info {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.45;
+    word-break: break-all;
+  }
+
+  .upload-warning {
+    margin-top: 10px;
+    border-radius: 12px;
+    background: #fff7d7;
+    border: 1.5px solid #f1df9a;
+    color: #6b5010;
+    padding: 11px 12px;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    margin-top: 12px;
+  }
+
+  .save-panel .buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .template-buttons {
+    gap: 8px;
+  }
+
+  .order-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 440px;
+    margin: 0 0 12px auto;
+  }
+
+  .btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #fff;
+    background: var(--ink);
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.12s ease;
+  }
+
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+  .btn.primary { background: var(--blue); }
+  .btn.green { background: var(--green); }
+  .btn.red { background: var(--red); }
+  .btn.light { background: #f0f2f4; color: var(--ink); }
+  .btn.light:hover { background: #e9ebef; }
+
+  .status {
+    margin-top: 10px;
+    min-height: 18px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.5;
+  }
+
+  .notice {
+    background: var(--gray);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 13px;
+    color: rgba(35,24,21,0.76);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+
+  .workspace-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .workspace-head h2 {
+    margin: 0 0 4px;
+    font-size: 17px;
+  }
+
+  .workspace-head p {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+
+  .board {
+    display: grid;
+    gap: 8px;
+    background: var(--gray);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 12px;
+    min-height: 420px;
+  }
+
+  .board.normal { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .board.mini { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+  .empty-board {
+    grid-column: 1 / -1;
+    min-height: 390px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+
+  .tile {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(35,24,21,0.045);
+    transition: 0.12s ease;
+  }
+
+  .tile:active { cursor: grabbing; }
+  .tile.dragging { opacity: 0.35; transform: scale(0.96); }
+  .tile.drop-target { outline: 2px solid var(--blue); outline-offset: -2px; }
+  .tile.selected { outline: 2px solid var(--blue); outline-offset: -2px; }
+  .tile.excluded::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(232, 76, 61, 0.18);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+  }
+
+  .num {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    line-height: 1;
+    top: 5px;
+    left: 5px;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    padding: 0 6px;
+    background: rgba(35,24,21,0.72);
+    color: #fff;
+    font-size: 10px;
+  }
+
+  .tile-actions {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    display: flex;
+    gap: 4px;
+    z-index: 3;
+  }
+
+  .tiny {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(255,255,255,0.9);
+    color: var(--ink);
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .help {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  canvas { display: none; }
+
+  @media (max-width: 880px) {
+    body { padding: 0 12px 36px; }
+    .layout { grid-template-columns: 1fr; }
+    .upload-row { grid-template-columns: 1fr; }
+    .topbar { margin: 0 -12px 18px; }
+    .hero { padding: 22px 20px; border-radius: 16px; }
+    .workflow { padding: 11px 12px; border-radius: 13px; }
+    .privacy { display: none; }
+    .workspace-head { flex-direction: column; }
+    .board { gap: 6px; padding: 8px; min-height: 300px; }
+    .empty-board { min-height: 260px; }
+    .num { min-width: 20px; height: 20px; font-size: 9px; top: 3px; left: 3px; }
+    .tile-actions { display: none; }
+    .save-panel .buttons { grid-template-columns: 1fr; }
+    .order-buttons { max-width: none; margin: 0 0 10px; }
+    .template-buttons { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a class="back" href="index.html">← 이모팁스로 돌아가기</a>
+    <div class="privacy">🔒 이미지는 서버로 보내지 않고 브라우저 안에서만 처리돼요</div>
+  </div>
+
+  <section class="hero">
+    <h1>이모티콘 한 판 컷팅기</h1>
+    <p>멈춰있는 이모티콘 한판 이미지를 올리면 일반 360×360 또는 미니 180×180 컷으로 잘라줘요. 잘린 컷은 드래그해서 순서를 바꾼 뒤, 제출용 개수만 저장할 수 있어요.</p>
+  </section>
+
+  <section class="workflow" aria-label="작업 순서">
+    <h2>작업 순서</h2>
+    <p>한판 종류 선택 → 가이드 다운 → 작업 → 배경 투명으로 이미지 저장 → 업로드 → 순서 배치 변경 → PNG 저장</p>
+  </section>
+
+  <main class="layout">
+    <aside>
+      <section class="panel">
+        <h2>1. 한판 종류 선택</h2>
+        <div class="mode-grid">
+          <button class="mode active" type="button" data-mode="normal">
+            <strong>일반 이미지</strong>
+            <span>360×360 컷 · 5×8 한판 40칸<br>현재 순서 기준 1~32번만 저장</span>
+          </button>
+          <button class="btn light" id="templateNormalBtn" type="button">▦ 일반 한판이미지 가이드 1800×2880 PNG 다운</button>
+          <button class="mode" type="button" data-mode="mini">
+            <strong>미니 이미지</strong>
+            <span>180×180 컷 · 6×7 한판 42칸<br>42개 전체 저장</span>
+          </button>
+          <button class="btn light" id="templateMiniBtn" type="button">▦ 미니 한판이미지 가이드 1080×1260 PNG 다운</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="panel tool-panel">
+      <div class="workspace-head">
+        <div>
+          <h2>2. 업로드 및 순서 배치 변경</h2>
+          <p>한판 이미지를 업로드하면 자동으로 컷팅됩니다. 컷을 드래그앤드롭해서 원하는 순서로 바꿔주세요.</p>
+        </div>
+      </div>
+      <div class="upload-row">
+        <label class="drop" id="dropZone">
+          <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/*">
+          <div class="emoji">🖼️</div>
+          <strong>이미지를 탭하거나 끌어놓기</strong>
+          <span id="guideText">권장 한판 크기: 1800×2880px<br>조각 크기: 360×360px</span>
+        </label>
+        <div>
+          <div class="upload-warning">
+            ⚠️ 주의: 한판 이미지는 배경을 투명으로 저장한 PNG 파일로 업로드해주세요. 배경색이 들어가 있으면 컷팅된 PNG에도 배경색이 함께 저장될 수 있어요.
+          </div>
+          <div class="file-info" id="fileInfo">아직 불러온 이미지가 없어요.</div>
+        </div>
+      </div>
+      <div class="buttons order-buttons">
+        <button class="btn red" id="resetBtn" type="button" disabled>↺ 처음 순서로 되돌리기</button>
+        <button class="btn light" id="deleteAllBtn" type="button" disabled>🗑️ 이미지 전체 삭제</button>
+      </div>
+      <div class="board normal" id="board">
+        <div class="empty-board">원하는 순서를 정하고<br>저장 탭에서 PNG 저장 버튼을 눌러주세요.</div>
+      </div>
+      <p class="help" id="helpText">일반 모드: 5×8 한판에서 40컷을 만들고, 현재 순서의 1~32번만 저장합니다.</p>
+    </section>
+
+    <section class="panel save-panel">
+      <div class="workspace-head">
+        <div>
+          <h2>3. 저장</h2>
+          <p>변경된 순서대로 PNG가 다시 번호 매겨져 저장됩니다.</p>
+        </div>
+      </div>
+      <div class="notice">
+        <b>저장 규칙</b><br>
+        일반 32개용은 한판을 40칸으로 보여주지만 PNG 저장에는 변경된 순서의 1~32번만 들어가요. 버릴 컷이나 후보 컷은 33~40번 자리로 보내면 저장되지 않습니다.<br>
+        미니 42개용은 변경된 순서대로 42개 전체가 PNG로 저장됩니다.
+      </div>
+      <div class="buttons">
+        <button class="btn green" id="zipBtn" type="button" disabled>🖼️ PNG 저장하기</button>
+        <button class="btn light" id="sheetBtn" type="button" disabled>🧩 현재 순서 한판 PNG 저장</button>
+      </div>
+      <div class="status" id="status"></div>
+    </section>
+  </main>
+</div>
+
+<canvas id="workCanvas"></canvas>
+<canvas id="sheetCanvas"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+<script>
+(function(){
+  const modes = {
+    normal: {
+      label: '일반 한판이미지',
+      tile: 360,
+      cols: 5,
+      rows: 8,
+      total: 40,
+      saveLimit: 32,
+      filePrefix: 'emot_360',
+      guide: '권장 한판 크기: 1800×2880px<br>조각 크기: 360×360px',
+      help: '일반 모드: 5×8 한판에서 40컷을 만들고, 현재 순서의 1~32번만 저장합니다.'
+    },
+    mini: {
+      label: '미니 한판이미지',
+      tile: 180,
+      cols: 6,
+      rows: 7,
+      total: 42,
+      saveLimit: 42,
+      filePrefix: 'emot_180',
+      guide: '권장 한판 크기: 1080×1260px<br>조각 크기: 180×180px',
+      help: '미니 모드: 6×7 한판에서 42컷을 만들고, 42개 전체를 저장합니다.'
+    }
+  };
+
+  const modeButtons = document.querySelectorAll('.mode');
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const guideText = document.getElementById('guideText');
+  const fileInfo = document.getElementById('fileInfo');
+  const templateNormalBtn = document.getElementById('templateNormalBtn');
+  const templateMiniBtn = document.getElementById('templateMiniBtn');
+  const deleteAllBtn = document.getElementById('deleteAllBtn');
+  const zipBtn = document.getElementById('zipBtn');
+  const sheetBtn = document.getElementById('sheetBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const statusEl = document.getElementById('status');
+  const board = document.getElementById('board');
+  const helpText = document.getElementById('helpText');
+  const workCanvas = document.getElementById('workCanvas');
+  const sheetCanvas = document.getElementById('sheetCanvas');
+
+  let currentMode = 'normal';
+  let loaded = null;
+  let cuts = [];
+  let originalCuts = [];
+  let dragIndex = null;
+  let selectedIndex = null;
+
+  function mode(){ return modes[currentMode]; }
+
+  function setStatus(message){ statusEl.textContent = message || ''; }
+
+  function updateModeUI(){
+    const spec = mode();
+    modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === currentMode));
+    guideText.innerHTML = spec.guide;
+    helpText.textContent = spec.help;
+    board.className = 'board ' + currentMode;
+    if(cuts.length) renderBoard();
+    else renderEmpty();
+  }
+
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(currentMode === btn.dataset.mode) return;
+      currentMode = btn.dataset.mode;
+      clearAll('한판 종류가 바뀌어서 이미지를 초기화했어요. 새 한판 이미지를 업로드해주세요.');
+    });
+  });
+
+  dropZone.addEventListener('dragover', event => {
+    event.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+  dropZone.addEventListener('drop', event => {
+    event.preventDefault();
+    dropZone.classList.remove('dragover');
+    if(event.dataTransfer.files && event.dataTransfer.files[0]){
+      loadFile(event.dataTransfer.files[0]);
+    }
+  });
+
+  fileInput.addEventListener('change', event => {
+    if(event.target.files && event.target.files[0]){
+      loadFile(event.target.files[0]);
+    }
+    fileInput.value = '';
+  });
+
+  function loadFile(file){
+    if(!file.type.startsWith('image/')){
+      setStatus('이미지 파일만 올릴 수 있어요.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = event => {
+      const img = new Image();
+      img.onload = () => {
+        const spec = mode();
+        const expectedW = spec.cols * spec.tile;
+        const expectedH = spec.rows * spec.tile;
+        loaded = { file, img };
+        cuts = [];
+        originalCuts = [];
+        selectedIndex = null;
+        fileInfo.textContent = '✅ ' + file.name + ' · 원본 ' + img.naturalWidth + '×' + img.naturalHeight + 'px';
+        deleteAllBtn.disabled = false;
+        zipBtn.disabled = true;
+        sheetBtn.disabled = true;
+        resetBtn.disabled = true;
+        if(img.naturalWidth !== expectedW || img.naturalHeight !== expectedH){
+          loaded = null;
+          deleteAllBtn.disabled = true;
+          fileInfo.textContent = '⚠️ ' + file.name + ' · 원본 ' + img.naturalWidth + '×' + img.naturalHeight + 'px';
+          renderEmpty('이미지 사이즈가 맞지 않아요. 한판 종류와 이미지 사이즈를 확인해주세요.');
+          setStatus('선택한 ' + spec.label + ' 권장 사이즈는 ' + expectedW + '×' + expectedH + 'px입니다. 업로드한 이미지는 ' + img.naturalWidth + '×' + img.naturalHeight + 'px예요.');
+          return;
+        }
+        renderEmpty('자동으로 컷팅하는 중이에요...');
+        cutSheet();
+      };
+      img.onerror = () => setStatus('이미지를 불러오지 못했어요. 다른 파일로 시도해주세요.');
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  templateNormalBtn.addEventListener('click', () => saveTemplate('normal'));
+  templateMiniBtn.addEventListener('click', () => saveTemplate('mini'));
+  deleteAllBtn.addEventListener('click', () => clearAll('이미지를 모두 삭제했어요.'));
+
+  function clearAll(message){
+    loaded = null;
+    cuts = [];
+    originalCuts = [];
+    dragIndex = null;
+    selectedIndex = null;
+    fileInput.value = '';
+    fileInfo.textContent = '아직 불러온 이미지가 없어요.';
+    deleteAllBtn.disabled = true;
+    zipBtn.disabled = true;
+    sheetBtn.disabled = true;
+    resetBtn.disabled = true;
+    updateModeUI();
+    setStatus(message || '');
+  }
+
+  function saveTemplate(templateMode){
+    const spec = modes[templateMode];
+    const sheetW = spec.cols * spec.tile;
+    const sheetH = spec.rows * spec.tile;
+    sheetCanvas.width = sheetW;
+    sheetCanvas.height = sheetH;
+    const ctx = sheetCanvas.getContext('2d');
+    ctx.clearRect(0, 0, sheetW, sheetH);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, sheetW, sheetH);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(35, 24, 21, 0.65)';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    for(let col = 1; col < spec.cols; col++){
+      const x = col * spec.tile + 0.15;
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, sheetH);
+    }
+    for(let row = 1; row < spec.rows; row++){
+      const y = row * spec.tile + 0.15;
+      ctx.moveTo(0, y);
+      ctx.lineTo(sheetW, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+    sheetCanvas.toBlob(blob => {
+      const label = templateMode === 'normal' ? '일반 한판이미지' : '미니 한판이미지';
+      downloadBlob(blob, spec.filePrefix + '_hanpan_' + sheetW + 'x' + sheetH + '.png');
+      setStatus(label + ' PNG를 저장했어요.');
+    }, 'image/png');
+  }
+
+  function cutSheet(){
+    if(!loaded) return;
+    const spec = mode();
+    selectedIndex = null;
+    const sheetW = spec.cols * spec.tile;
+    const sheetH = spec.rows * spec.tile;
+    workCanvas.width = sheetW;
+    workCanvas.height = sheetH;
+    const ctx = workCanvas.getContext('2d');
+    ctx.clearRect(0, 0, sheetW, sheetH);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    const img = loaded.img;
+    ctx.drawImage(img, 0, 0);
+
+    const nextCuts = [];
+    let n = 0;
+    for(let row = 0; row < spec.rows; row++){
+      for(let col = 0; col < spec.cols; col++){
+        const tileCanvas = document.createElement('canvas');
+        tileCanvas.width = spec.tile;
+        tileCanvas.height = spec.tile;
+        const tileCtx = tileCanvas.getContext('2d');
+        tileCtx.clearRect(0, 0, spec.tile, spec.tile);
+        tileCtx.drawImage(workCanvas, col * spec.tile, row * spec.tile, spec.tile, spec.tile, 0, 0, spec.tile, spec.tile);
+        n++;
+        nextCuts.push({
+          id: currentMode + '-' + Date.now() + '-' + n,
+          originalNumber: n,
+          dataUrl: tileCanvas.toDataURL('image/png')
+        });
+      }
+    }
+
+    cuts = nextCuts;
+    originalCuts = nextCuts.map(item => ({ ...item }));
+    zipBtn.disabled = false;
+    sheetBtn.disabled = false;
+    resetBtn.disabled = false;
+    renderBoard();
+    setStatus('컷팅 완료! 원하는 순서를 정한 뒤 저장 탭에서 PNG 저장 버튼을 눌러주세요.');
+  }
+
+  function renderEmpty(message){
+    board.innerHTML = '';
+    const empty = document.createElement('div');
+    empty.className = 'empty-board';
+    empty.innerHTML = (message || '원하는 순서를 정하고<br>저장 탭에서 PNG 저장 버튼을 눌러주세요.').replace(/\n/g, '<br>');
+    board.appendChild(empty);
+  }
+
+  function renderBoard(){
+    const spec = mode();
+    board.innerHTML = '';
+    cuts.forEach((cut, index) => {
+      const isSaved = index < spec.saveLimit;
+      const tile = document.createElement('div');
+      tile.className = 'tile' + (isSaved ? '' : ' excluded') + (selectedIndex === index ? ' selected' : '');
+      tile.draggable = true;
+      tile.dataset.index = String(index);
+      tile.setAttribute('aria-label', (index + 1) + '번 컷');
+
+      const img = document.createElement('img');
+      img.src = cut.dataUrl;
+      img.alt = (index + 1) + '번 컷';
+      tile.appendChild(img);
+
+      const num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = String(index + 1);
+      tile.appendChild(num);
+
+      const actions = document.createElement('div');
+      actions.className = 'tile-actions';
+      const prev = document.createElement('button');
+      prev.className = 'tiny';
+      prev.type = 'button';
+      prev.textContent = '←';
+      prev.title = '앞으로 이동';
+      prev.addEventListener('click', event => {
+        event.stopPropagation();
+        moveCut(index, index - 1);
+      });
+      const next = document.createElement('button');
+      next.className = 'tiny';
+      next.type = 'button';
+      next.textContent = '→';
+      next.title = '뒤로 이동';
+      next.addEventListener('click', event => {
+        event.stopPropagation();
+        moveCut(index, index + 1);
+      });
+      actions.appendChild(prev);
+      actions.appendChild(next);
+      tile.appendChild(actions);
+
+      tile.addEventListener('dragstart', event => {
+        dragIndex = index;
+        selectedIndex = null;
+        tile.classList.add('dragging');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(index));
+      });
+
+      tile.addEventListener('dragend', () => {
+        dragIndex = null;
+        document.querySelectorAll('.tile').forEach(el => el.classList.remove('dragging', 'drop-target'));
+      });
+
+      tile.addEventListener('dragover', event => {
+        event.preventDefault();
+        tile.classList.add('drop-target');
+      });
+
+      tile.addEventListener('dragleave', () => tile.classList.remove('drop-target'));
+
+      tile.addEventListener('drop', event => {
+        event.preventDefault();
+        tile.classList.remove('drop-target');
+        const from = dragIndex ?? Number(event.dataTransfer.getData('text/plain'));
+        const to = Number(tile.dataset.index);
+        moveCut(from, to);
+      });
+
+      tile.addEventListener('click', event => {
+        if(event.target.closest('.tiny')) return;
+        if(selectedIndex === null){
+          selectedIndex = index;
+          renderBoard();
+          return;
+        }
+        if(selectedIndex === index){
+          selectedIndex = null;
+          renderBoard();
+          return;
+        }
+        moveCut(selectedIndex, index);
+      });
+
+      board.appendChild(tile);
+    });
+  }
+
+  function moveCut(from, to){
+    if(from === null || Number.isNaN(from) || Number.isNaN(to)) return;
+    if(to < 0 || to >= cuts.length || from === to) return;
+    const temp = cuts[from];
+    cuts[from] = cuts[to];
+    cuts[to] = temp;
+    selectedIndex = null;
+    renderBoard();
+  }
+
+  resetBtn.addEventListener('click', () => {
+    cuts = originalCuts.map(item => ({ ...item }));
+    selectedIndex = null;
+    renderBoard();
+    setStatus('처음 자른 순서로 되돌렸어요.');
+  });
+
+  function dataUrlToBlob(dataUrl){
+    const parts = dataUrl.split(',');
+    const mime = parts[0].match(/:(.*?);/)[1];
+    const binary = atob(parts[1]);
+    const bytes = new Uint8Array(binary.length);
+    for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  zipBtn.addEventListener('click', async () => {
+    if(!cuts.length) return;
+    if(typeof JSZip === 'undefined'){
+      setStatus('ZIP 기능을 불러오지 못했어요. 인터넷 연결을 확인한 뒤 다시 시도해주세요.');
+      return;
+    }
+    const spec = mode();
+    zipBtn.disabled = true;
+    setStatus('저장 대상 ' + spec.saveLimit + '개를 ZIP으로 묶는 중이에요...');
+    try {
+      const zip = new JSZip();
+      cuts.slice(0, spec.saveLimit).forEach((cut, index) => {
+        const base64 = cut.dataUrl.split(',')[1];
+        zip.file(spec.filePrefix + '_' + String(index + 1).padStart(3, '0') + '.png', base64, { base64: true });
+      });
+      const blob = await zip.generateAsync({ type: 'blob' });
+      downloadBlob(blob, spec.filePrefix + '_' + spec.saveLimit + 'cuts.zip');
+      setStatus('완료! 현재 순서 기준 ' + spec.saveLimit + '개만 저장했어요.');
+    } catch (error) {
+      setStatus('ZIP 저장 중 문제가 생겼어요. 다시 시도해주세요.');
+    } finally {
+      zipBtn.disabled = false;
+    }
+  });
+
+  sheetBtn.addEventListener('click', () => {
+    if(!cuts.length) return;
+    const spec = mode();
+    const sheetW = spec.cols * spec.tile;
+    const sheetH = spec.rows * spec.tile;
+    sheetCanvas.width = sheetW;
+    sheetCanvas.height = sheetH;
+    const ctx = sheetCanvas.getContext('2d');
+    ctx.clearRect(0, 0, sheetW, sheetH);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    let loadedCount = 0;
+    cuts.forEach((cut, index) => {
+      const img = new Image();
+      img.onload = () => {
+        const col = index % spec.cols;
+        const row = Math.floor(index / spec.cols);
+        ctx.drawImage(img, col * spec.tile, row * spec.tile, spec.tile, spec.tile);
+        loadedCount++;
+        if(loadedCount === cuts.length){
+          sheetCanvas.toBlob(blob => {
+            downloadBlob(blob, spec.filePrefix + '_reordered_sheet.png');
+            setStatus('현재 순서의 한판 PNG를 저장했어요.');
+          }, 'image/png');
+        }
+      };
+      img.src = cut.dataUrl;
+    });
+  });
+
+  updateModeUI();
+})();
+</script>
+</body>
+</html>

@@ -257,6 +257,24 @@
     color: #fff;
   }
 
+  .card.cutter-card {
+    background: #b9dcff;
+    border-color: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .card.cutter-card > * { position: relative; }
+  .card.cutter-card .card-title,
+  .card.cutter-card .card-desc {
+    color: #231815;
+    text-shadow: none;
+  }
+  .card.cutter-card .card-desc { color: rgba(35,24,21,0.62); }
+  .card.cutter-card .card-arrow span {
+    background: #0b8bff;
+    color: #fff;
+  }
+
   .card:active {
     transform: scale(0.97);
   }
@@ -432,6 +450,13 @@
     <div class="card-title">이모티콘 시장 분석 TIP</div>
     <div class="card-desc">시장 분석 방법을 가볍게 읽고<br>원본 PDF도 바로 미리보기</div>
     <div class="card-arrow"><span>보기 →</span></div>
+  </a>
+
+  <a class="card cutter-card" href="cutter.html">
+    <span class="card-emoji">✂️</span>
+    <div class="card-title">이모티콘 한 판 컷팅기</div>
+    <div class="card-desc">멈춰있는 이모티콘 한판을<br>자르고, 순서를 바꾸고, 저장하기</div>
+    <div class="card-arrow"><span>자르기 →</span></div>
   </a>
 
   <a class="card tips-card" href="https://app.notion.com/p/389f856893708000b987fbeebd80d5d8?source=copy_link" target="_blank" rel="noreferrer">
