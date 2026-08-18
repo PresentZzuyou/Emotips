@@ -275,6 +275,35 @@
     color: #fff;
   }
 
+  .card.fair-card {
+    background: #cfa4e9;
+    color: #231815;
+    position: relative;
+    overflow: hidden;
+  }
+  .card.fair-card::before {
+    content: "31";
+    position: absolute;
+    right: -3px;
+    bottom: -34px;
+    color: rgba(35,24,21,0.08);
+    font-size: 128px;
+    font-weight: 900;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .card.fair-card > * { position: relative; }
+  .card.fair-card .card-title,
+  .card.fair-card .card-desc {
+    color: #231815;
+    text-shadow: none;
+  }
+  .card.fair-card .card-desc { color: rgba(35,24,21,0.66); }
+  .card.fair-card .card-arrow span {
+    background: #231815;
+    color: #fff;
+  }
+
   .card:active {
     transform: scale(0.97);
   }
@@ -471,6 +500,13 @@
     <div class="card-title">이모팁스 프롬프트 목록</div>
     <div class="card-desc">이모팁스의 꿀팁을 담은<br>프롬프트 모아보기</div>
     <div class="card-arrow"><span>보기 →</span></div>
+  </a>
+
+  <a class="card fair-card" href="https://presentzzuyou.github.io/fair-calendar/" target="_blank" rel="noreferrer">
+    <span class="card-emoji">🗓️</span>
+    <div class="card-title">콘텐츠 페어 캘린더</div>
+    <div class="card-desc">전국의 일러스트·캐릭터·IP·웹툰<br>페어 일정을 한눈에 확인하기</div>
+    <div class="card-arrow"><span>일정 보기 →</span></div>
   </a>
 
   <a class="card request-card" href="https://open.kakao.com/o/gc2CSWyi" target="_blank">
