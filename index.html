@@ -158,6 +158,17 @@
     min-height: 200px;
   }
 
+  .card::after {
+    content: none !important;
+  }
+
+  .card.schedule-card::before,
+  .card.calendar-card::before,
+  .card.event-card::before,
+  .card.program-card::before {
+    content: none !important;
+  }
+
   .card:nth-child(1) { background: #0b8bff; animation-delay: 0.1s; }
   .card:nth-child(2) { background: #e84c3d; animation-delay: 0.18s; }
   .card:nth-child(3) { background: #00a969; animation-delay: 0.26s; }
