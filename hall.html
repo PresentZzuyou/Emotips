@@ -29,10 +29,26 @@ body {
   max-width: min(960px, 90vw); margin: 0 auto;
 }
 .top-nav-wrap {
-  background: #0a0800;
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,8,0,.92);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(201,146,10,.25);
   width: 100%;
 }
+
+/* 맨 위로 버튼 */
+.scroll-top {
+  position: fixed; bottom: 28px; right: 20px; z-index: 200;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(10,8,0,.85); border: 1.5px solid rgba(201,146,10,.5);
+  color: var(--gold2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s, background .18s;
+  backdrop-filter: blur(6px);
+}
+.scroll-top.visible { opacity: 1; pointer-events: auto; }
+.scroll-top:hover { background: var(--gold); border-color: var(--gold); color: #000; }
 .fab-home {
   width: 34px; height: 34px; border-radius: 50%;
   background: rgba(201,146,10,.08); border: 1px solid rgba(201,146,10,.4);
