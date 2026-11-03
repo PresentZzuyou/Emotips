@@ -377,6 +377,12 @@ function buildFilters() {
   sel.addEventListener('change', () => render(sel.value));
 }
 
+// 스크롤 상단 버튼
+const scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 300);
+});
+
 // 카운트업 애니메이션
 (function() {
   const el = document.getElementById('totalCount');
