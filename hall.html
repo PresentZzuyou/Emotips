@@ -416,8 +416,6 @@ function setFilter(val) {
 
 function updateStats() {
   document.getElementById('totalCount').textContent = EMOTICONS.length;
-  document.getElementById('creatorCount').textContent = new Set(EMOTICONS.map(e => e.creator)).size;
-  document.getElementById('liveCount').textContent = EMOTICONS.filter(e => e.shopUrl).length;
 }
 
 buildFilters();
