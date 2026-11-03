@@ -337,7 +337,29 @@ function buildFilters() {
   sel.addEventListener('change', () => render(sel.value));
 }
 
-document.getElementById('totalCount').textContent = EMOTICONS.length;
+// 카운트업 애니메이션
+(function() {
+  const el = document.getElementById('totalCount');
+  const target = EMOTICONS.length;
+  const duration = 1200;
+  const start = performance.now();
+  el.style.opacity = '0';
+  el.style.transform = 'scale(.6)';
+  el.style.transition = 'opacity .4s ease, transform .4s ease';
+  setTimeout(() => {
+    el.style.opacity = '1';
+    el.style.transform = 'scale(1)';
+    const step = (now) => {
+      const elapsed = now - start - 200;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(ease * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  }, 200);
+})();
 buildFilters();
 render('all');
 </script>
