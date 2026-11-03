@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>승인의전당 — 이모팁스</title>
+<meta name="description" content="이모팁스 활동을 통해 승인된 이모티콘 작품 모음">
+<style>
+:root {
+  --gold: #f5c518;
+  --gold-light: #fff8dc;
+  --blue: #0b8bff;
+  --dark: #1a1a2e;
+  --card-bg: #fff;
+  --bg: #f8f9fc;
+  --border: #e8e8ee;
+  --sub: #888;
+  --text: #1a1a1a;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── 헤더 ── */
+.top-bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.home-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--sub);
+  text-decoration: none;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .2s;
+}
+.home-btn:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
+.top-title { font-size: 16px; font-weight: 700; color: var(--text); flex: 1; text-align: center; }
+
+/* ── 히어로 ── */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+  padding: 56px 24px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245,197,24,.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-trophy { font-size: 52px; margin-bottom: 14px; display: block; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.hero-title {
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.hero-title span { color: var(--gold); }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.6; margin-bottom: 28px; }
+.hero-stats {
+  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-num { font-size: 28px; font-weight: 900; color: var(--gold); }
+.stat-label { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 2px; }
+
+/* ── 필터 ── */
+.filter-wrap {
+  padding: 20px 20px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.filter-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--sub);
+  font-family: inherit;
+  transition: all .18s;
+}
+.filter-btn.active {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: #fff;
+}
+.filter-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+
+/* ── 그리드 ── */
+.grid-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  border: 1.5px solid var(--border);
+  transition: transform .22s, box-shadow .22s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
+.card-thumb {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
+  position: relative;
+  overflow: hidden;
+}
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.card-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--gold);
+  color: #1a1a1a;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.card-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.card-title { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.35; }
+.card-creator { font-size: 12px; color: var(--sub); }
+.card-date { font-size: 11px; color: #bbb; margin-top: auto; padding-top: 8px; }
+.card-shop {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 10px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: #fff3f5;
+  color: #e84c3d;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1.5px solid #ffd0d0;
+  transition: background .15s;
+}
+.card-shop:hover { background: #ffe4e4; }
+.card-shop svg { flex-shrink: 0; }
+
+/* ── 빈 상태 ── */
+.empty { text-align: center; padding: 60px 20px; color: var(--sub); font-size: 15px; }
+
+/* ── FAB ── */
+.fab-home {
+  position: fixed;
+  bottom: 24px; right: 20px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 12px rgba(0,0,0,.10);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--sub);
+  text-decoration: none;
+  z-index: 200;
+  transition: all .2s;
+}
+.fab-home:hover { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 4px 16px rgba(11,139,255,.25); }
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .grid-wrap { padding: 16px 12px 80px; }
+  .card-thumb { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <a class="home-btn" href="index.html" aria-label="홈으로">
+    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  </a>
+  <div class="top-title">승인의전당</div>
+  <span class="home-btn" aria-hidden="true" style="opacity:0;pointer-events:none"></span>
+</header>
+
+<section class="hero">
+  <span class="hero-trophy">🏆</span>
+  <h1 class="hero-title">승인의 <span>전당</span></h1>
+  <p class="hero-sub">이모팁스 활동을 통해 카카오 이모티콘 승인을 받은<br>작품들을 모아뒀어요</p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num" id="totalCount">0</div>
+      <div class="stat-label">총 승인 작품</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="creatorCount">0</div>
+      <div class="stat-label">참여 작가</div>
+    </div>
+  </div>
+</section>
+
+<div class="filter-wrap">
+  <div class="filter-row" id="filterRow">
+    <button class="filter-btn active" data-filter="all">전체</button>
+  </div>
+</div>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+</div>
+
+<a href="index.html" class="fab-home" aria-label="홈으로">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+</a>
+
+<script>
+// ── 데이터 (나중에 실제 데이터로 교체) ──
+const EMOTICONS = [
+  {
+    title: '야근하는 직장인 김대리',
+    creator: '이모팁스 컨설팅',
+    date: '2024.02',
+    year: '2024',
+    tag: '공감',
+    emoji: '😩',
+    bg: '#e8f4f8',
+    shopUrl: 'https://e.kakao.com/',
+  },
+  {
+    title: '먹보 햄스터의 일상',
+    creator: '이모팁스 컨설팅',
+    date: '2024.04',
+    year: '2024',
+    tag: '귀여움',
+    emoji: '🐹',
+    bg: '#fff8e8',
+    shopUrl: 'https://e.kakao.com/',
+  },
+  {
+    title: '퇴근하고 싶어요',
+    creator: '이모팁스 컨설팅',
+    date: '2024.06',
+    year: '2024',
+    tag: '공감',
+    emoji: '🏃',
+    bg: '#f0f8ff',
+    shopUrl: 'https://e.kakao.com/',
+  },
+  {
+    title: '고양이의 일상 루틴',
+    creator: '이모팁스 컨설팅',
+    date: '2024.09',
+    year: '2024',
+    tag: '귀여움',
+    emoji: '🐱',
+    bg: '#fff0f8',
+    shopUrl: 'https://e.kakao.com/',
+  },
+  {
+    title: '운동하기 싫은 나',
+    creator: '이모팁스 컨설팅',
+    date: '2025.01',
+    year: '2025',
+    tag: '공감',
+    emoji: '💪',
+    bg: '#f0fff4',
+    shopUrl: 'https://e.kakao.com/',
+  },
+  {
+    title: '졸려도 힘내는 토끼',
+    creator: '이모팁스 컨설팅',
+    date: '2025.03',
+    year: '2025',
+    tag: '귀여움',
+    emoji: '🐰',
+    bg: '#fdf0ff',
+    shopUrl: 'https://e.kakao.com/',
+  },
+];
+
+// ── 렌더링 ──
+function render(filter) {
+  const list = filter === 'all' ? EMOTICONS : EMOTICONS.filter(e => e.year === filter);
+  const grid = document.getElementById('grid');
+
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="empty">해당 연도의 작품이 없어요 🥲</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(e => `
+    <a class="card" href="${e.shopUrl}" target="_blank" rel="noreferrer">
+      <div class="card-thumb" style="background:${e.bg}">
+        <span>${e.emoji}</span>
+        <span class="card-badge">${e.tag}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${e.title}</div>
+        <div class="card-creator">${e.creator}</div>
+        <div class="card-date">${e.date} 승인</div>
+        <a class="card-shop" href="${e.shopUrl}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          카카오 이모티콘샵
+        </a>
+      </div>
+    </a>
+  `).join('');
+}
+
+// ── 필터 버튼 ──
+function buildFilters() {
+  const years = [...new Set(EMOTICONS.map(e => e.year))].sort((a, b) => b - a);
+  const row = document.getElementById('filterRow');
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = y;
+    btn.textContent = y + '년';
+    btn.addEventListener('click', () => setFilter(y));
+    row.appendChild(btn);
+  });
+  row.querySelector('[data-filter="all"]').addEventListener('click', () => setFilter('all'));
+}
+
+function setFilter(val) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === val));
+  render(val);
+}
+
+// ── 통계 ──
+function updateStats() {
+  document.getElementById('totalCount').textContent = EMOTICONS.length;
+  document.getElementById('creatorCount').textContent = new Set(EMOTICONS.map(e => e.creator)).size;
+}
+
+buildFilters();
+render('all');
+updateStats();
+</script>
+</body>
+</html>
