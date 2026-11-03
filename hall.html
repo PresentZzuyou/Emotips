@@ -22,29 +22,28 @@ body {
   min-height: 100vh;
 }
 
-/* ── 오버레이 홈버튼 ── */
+/* ── 상단 헤더 ── */
+.top-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: #0a0800;
+  border-bottom: 1px solid rgba(201,146,10,.25);
+}
 .fab-home {
-  position: fixed; top: env(safe-area-inset-top,12px); left: 14px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(8,6,4,.8); border: 1px solid rgba(201,146,10,.45);
-  backdrop-filter: blur(8px);
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(201,146,10,.08); border: 1px solid rgba(201,146,10,.4);
   display: flex; align-items: center; justify-content: center;
-  color: var(--gold3); text-decoration: none; z-index: 200;
-  transition: all .18s;
+  color: var(--gold3); text-decoration: none;
+  transition: all .18s; flex-shrink: 0;
 }
 .fab-home:hover { background: var(--gold); border-color: var(--gold); color: #000; }
-
-/* ── 연도 필터 ── */
-.filter-overlay {
-  position: fixed; top: env(safe-area-inset-top,12px); right: 14px; z-index: 200;
-}
+.nav-title { font-size: 13px; font-weight: 900; color: var(--gold2); letter-spacing: 1px; }
 .year-select {
   appearance: none; -webkit-appearance: none;
-  padding: 7px 28px 7px 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(201,146,10,.5);
-  background: rgba(8,6,4,.85) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23e8b020' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;
-  backdrop-filter: blur(8px);
+  padding: 6px 26px 6px 11px;
+  border-radius: 16px;
+  border: 1px solid rgba(201,146,10,.45);
+  background: rgba(201,146,10,.06) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23e8b020' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;
   font-size: 12px; font-weight: 700; color: var(--gold3); font-family: inherit;
   cursor: pointer; outline: none;
 }
