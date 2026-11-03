@@ -304,7 +304,8 @@ function render(filter) {
     const entries = items.map(e => {
       const cls = 'entry' + (e.shopUrl ? ' live' : '');
       const badge = e.shopUrl ? '<span class="e-live">보러가기</span>' : '';
-      const inner = `<span class="e-year">${e.year}</span><span class="e-title">&lt;${e.title}&gt;</span>${badge}`;
+      const displayTitle = e.title ? `&lt;${e.title}&gt;` : `<span class="e-placeholder">&lt;제목은 출시 후 기재&gt;</span>`;
+      const inner = `<span class="e-year">${e.date}</span>${displayTitle}${badge}`;
       return e.shopUrl
         ? `<a class="${cls}" href="${e.shopUrl}" target="_blank" rel="noreferrer">${inner}</a>`
         : `<div class="${cls}">${inner}</div>`;
