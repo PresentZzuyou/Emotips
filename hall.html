@@ -291,7 +291,7 @@ function render(filter) {
     const entries = items.map(e => {
       const cls = 'entry' + (e.shopUrl ? ' live' : '');
       const badge = e.shopUrl ? '<span class="e-live">보러가기</span>' : '';
-      const inner = `<span class="e-title">${e.title}</span><span class="e-creator">${e.creator}</span>${badge}`;
+      const inner = `<span class="e-year">${e.year}</span><span class="e-title">&lt;${e.title}&gt;</span>${badge}`;
       return e.shopUrl
         ? `<a class="${cls}" href="${e.shopUrl}" target="_blank" rel="noreferrer">${inner}</a>`
         : `<div class="${cls}">${inner}</div>`;
