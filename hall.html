@@ -401,18 +401,17 @@ function recalcNumbers(list) {
 
 function buildFilters() {
   const years = [...new Set(EMOTICONS.map(e => e.year))].sort((a,b) => b-a);
-  const row = document.getElementById('filterRow');
+  const sel = document.getElementById('yearSelect');
   years.forEach(y => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn'; btn.dataset.filter = y; btn.textContent = y + '년';
-    btn.addEventListener('click', () => setFilter(y));
-    row.appendChild(btn);
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y + '년';
+    sel.appendChild(opt);
   });
-  row.querySelector('[data-filter="all"]').addEventListener('click', () => setFilter('all'));
+  sel.addEventListener('change', () => render(sel.value));
 }
 
 function setFilter(val) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === val));
+  document.getElementById('yearSelect').value = val;
   render(val);
 }
 
