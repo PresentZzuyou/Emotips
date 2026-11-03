@@ -112,20 +112,24 @@ body {
   padding: 20px 20px 0;
   max-width: 760px;
   margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
 }
-.filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.filter-btn {
-  padding: 6px 16px;
-  border-radius: 20px;
+.year-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 8px 36px 8px 14px;
+  border-radius: 10px;
   border: 1.5px solid var(--border);
-  background: #fff;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
   font-size: 13px; font-weight: 600;
-  cursor: pointer; color: var(--sub);
+  color: var(--text);
   font-family: inherit;
-  transition: all .18s;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .18s;
 }
-.filter-btn.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-.filter-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+.year-select:focus { border-color: var(--blue); }
 
 /* ── 목록 ── */
 .list-wrap {
