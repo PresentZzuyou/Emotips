@@ -304,6 +304,27 @@
     color: #fff;
   }
 
+  .card.hall-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .card.hall-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(245,197,24,.22) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .card.hall-card > * { position: relative; }
+  .card.hall-card .card-title,
+  .card.hall-card .card-desc { color: #fff; text-shadow: none; }
+  .card.hall-card .card-desc { color: rgba(255,255,255,.65); }
+  .card.hall-card .card-arrow span {
+    background: #f5c518;
+    color: #1a1a1a;
+  }
+
   .card:active {
     transform: scale(0.97);
   }
