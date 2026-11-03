@@ -7,13 +7,13 @@
 <meta name="description" content="이모팁스 활동을 통해 승인된 이모티콘 작품 모음">
 <style>
 :root {
-  --gold: #f5c518;
+  --gold: #e8a800;
   --gold-light: #fff8dc;
   --blue: #0b8bff;
   --dark: #1a1a2e;
-  --card-bg: #fff;
-  --bg: #f8f9fc;
-  --border: #e8e8ee;
+  --red: #e84c3d;
+  --bg: #f6f6f4;
+  --border: #e0ddd6;
   --sub: #888;
   --text: #1a1a1a;
   color-scheme: light;
@@ -35,7 +35,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 13px 20px;
-  background: rgba(255,255,255,0.88);
+  background: rgba(246,246,244,0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -56,8 +56,8 @@ body {
 
 /* ── 히어로 ── */
 .hero {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-  padding: 56px 24px 48px;
+  background: var(--dark);
+  padding: 48px 24px 40px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -65,123 +65,208 @@ body {
 .hero::before {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(245,197,24,.18) 0%, transparent 65%);
+  background: radial-gradient(ellipse at 50% -20%, rgba(232,168,0,.2) 0%, transparent 60%);
   pointer-events: none;
 }
-.hero-trophy { font-size: 52px; margin-bottom: 14px; display: block; animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.hero-label {
+  display: inline-block;
+  border: 1.5px solid rgba(232,168,0,.6);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
 .hero-title {
-  font-size: clamp(28px, 6vw, 42px);
+  font-size: clamp(30px, 7vw, 48px);
   font-weight: 900;
   color: #fff;
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 10px;
 }
-.hero-title span { color: var(--gold); }
-.hero-sub { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.6; margin-bottom: 28px; }
+.hero-title em { color: var(--gold); font-style: normal; }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.7; margin-bottom: 32px; }
 .hero-stats {
-  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+  display: flex; gap: 0; justify-content: center;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 320px;
+  margin: 0 auto;
 }
 .stat-item {
+  flex: 1; padding: 14px 12px;
+  border-right: 1px solid rgba(255,255,255,.1);
   text-align: center;
 }
-.stat-num { font-size: 28px; font-weight: 900; color: var(--gold); }
-.stat-label { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 2px; }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-size: 26px; font-weight: 900; color: var(--gold); }
+.stat-label { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 2px; }
 
 /* ── 필터 ── */
 .filter-wrap {
   padding: 20px 20px 0;
-  max-width: 1100px;
+  max-width: 760px;
   margin: 0 auto;
 }
-.filter-row {
-  display: flex; gap: 8px; flex-wrap: wrap;
-}
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .filter-btn {
-  padding: 7px 16px;
+  padding: 6px 16px;
   border-radius: 20px;
   border: 1.5px solid var(--border);
   background: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--sub);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; color: var(--sub);
   font-family: inherit;
   transition: all .18s;
 }
-.filter-btn.active {
-  background: var(--dark);
-  border-color: var(--dark);
-  color: #fff;
-}
+.filter-btn.active { background: var(--dark); border-color: var(--dark); color: #fff; }
 .filter-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
 
-/* ── 그리드 ── */
-.grid-wrap {
-  max-width: 1100px;
+/* ── 목록 ── */
+.list-wrap {
+  max-width: 760px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 18px;
-}
-
-/* ── 카드 ── */
-.card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,.06);
-  border: 1.5px solid var(--border);
-  transition: transform .22s, box-shadow .22s;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
+  padding: 20px 16px 100px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
-.card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
-.card-thumb {
-  aspect-ratio: 1;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 52px;
+
+/* ── 배너 카드 ── */
+.banner {
+  background: #fff;
+  border-radius: 14px;
+  border: 2px solid #ece9e1;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   position: relative;
   overflow: hidden;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  text-decoration: none;
+  color: inherit;
 }
-.card-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.card-badge {
-  position: absolute; top: 10px; right: 10px;
+.banner.linkable {
+  cursor: pointer;
+}
+.banner.linkable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.10);
+  border-color: var(--gold);
+}
+.banner::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
   background: var(--gold);
-  color: #1a1a1a;
+  border-radius: 14px 0 0 14px;
+}
+.banner.linkable::before { background: var(--red); }
+
+/* 순번 */
+.banner-num {
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(0,0,0,.18);
+  min-width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+}
+
+/* 메인 텍스트 */
+.banner-body { flex: 1; min-width: 0; }
+.banner-title {
+  font-size: clamp(15px, 3.5vw, 19px);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.banner.linkable .banner-title { color: #1a1a1a; }
+.banner-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+.banner-creator { font-size: 12px; color: var(--sub); }
+.banner-date {
+  font-size: 11px;
+  color: #bbb;
+}
+.banner-date::before { content: '·'; margin-right: 6px; }
+
+/* 태그 */
+.banner-tag {
   font-size: 10px;
   font-weight: 800;
-  padding: 3px 8px;
+  padding: 2px 8px;
   border-radius: 20px;
+  background: var(--gold-light);
+  color: var(--gold);
+  border: 1px solid rgba(232,168,0,.3);
+  flex-shrink: 0;
 }
-.card-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.card-title { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.35; }
-.card-creator { font-size: 12px; color: var(--sub); }
-.card-date { font-size: 11px; color: #bbb; margin-top: auto; padding-top: 8px; }
-.card-shop {
-  display: inline-flex; align-items: center; gap: 4px;
-  margin-top: 10px;
-  padding: 7px 12px;
-  border-radius: 10px;
-  background: #fff3f5;
-  color: #e84c3d;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  border: 1.5px solid #ffd0d0;
-  transition: background .15s;
-}
-.card-shop:hover { background: #ffe4e4; }
-.card-shop svg { flex-shrink: 0; }
 
-/* ── 빈 상태 ── */
-.empty { text-align: center; padding: 60px 20px; color: var(--sub); font-size: 15px; }
+/* 오른쪽 영역 */
+.banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.banner-arrow {
+  font-size: 18px;
+  color: var(--red);
+  opacity: 0;
+  transition: opacity .18s, transform .18s;
+  font-weight: 900;
+}
+.banner.linkable:hover .banner-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+.banner-shop-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  background: #fff5f4;
+  border: 1px solid #ffd0cc;
+  border-radius: 6px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* 구분선 (연도 헤더) */
+.year-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px 4px;
+  margin-top: 8px;
+}
+.year-header:first-child { margin-top: 0; }
+.year-label {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--sub);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.year-line { flex: 1; height: 1px; background: var(--border); }
 
 /* ── FAB ── */
 .fab-home {
@@ -201,9 +286,9 @@ body {
 .fab-home:hover { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 4px 16px rgba(11,139,255,.25); }
 
 @media (max-width: 480px) {
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .grid-wrap { padding: 16px 12px 80px; }
-  .card-thumb { font-size: 40px; }
+  .banner { padding: 14px 16px; gap: 10px; }
+  .banner-title { font-size: 15px; }
+  .banner-num { display: none; }
 }
 </style>
 </head>
@@ -221,9 +306,9 @@ body {
 </header>
 
 <section class="hero">
-  <span class="hero-trophy">🏆</span>
-  <h1 class="hero-title">승인의 <span>전당</span></h1>
-  <p class="hero-sub">이모팁스 활동을 통해 카카오 이모티콘 승인을 받은<br>작품들을 모아뒀어요</p>
+  <div class="hero-label">Hall of Approval</div>
+  <h1 class="hero-title">승인의 <em>전당</em></h1>
+  <p class="hero-sub">이모팁스 활동을 통해<br>카카오 이모티콘 승인을 받은 작품들</p>
   <div class="hero-stats">
     <div class="stat-item">
       <div class="stat-num" id="totalCount">0</div>
@@ -232,6 +317,10 @@ body {
     <div class="stat-item">
       <div class="stat-num" id="creatorCount">0</div>
       <div class="stat-label">참여 작가</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="liveCount">0</div>
+      <div class="stat-label">출시 작품</div>
     </div>
   </div>
 </section>
@@ -242,9 +331,7 @@ body {
   </div>
 </div>
 
-<div class="grid-wrap">
-  <div class="grid" id="grid"></div>
-</div>
+<div class="list-wrap" id="listWrap"></div>
 
 <a href="index.html" class="fab-home" aria-label="홈으로">
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -254,108 +341,74 @@ body {
 </a>
 
 <script>
-// ── 데이터 (나중에 실제 데이터로 교체) ──
+// ── 데이터 ──
+// shopUrl 있으면 출시됨 (클릭 시 이동), 없으면 승인만 된 상태
 const EMOTICONS = [
-  {
-    title: '야근하는 직장인 김대리',
-    creator: '이모팁스 컨설팅',
-    date: '2024.02',
-    year: '2024',
-    tag: '공감',
-    emoji: '😩',
-    bg: '#e8f4f8',
-    shopUrl: 'https://e.kakao.com/',
-  },
-  {
-    title: '먹보 햄스터의 일상',
-    creator: '이모팁스 컨설팅',
-    date: '2024.04',
-    year: '2024',
-    tag: '귀여움',
-    emoji: '🐹',
-    bg: '#fff8e8',
-    shopUrl: 'https://e.kakao.com/',
-  },
-  {
-    title: '퇴근하고 싶어요',
-    creator: '이모팁스 컨설팅',
-    date: '2024.06',
-    year: '2024',
-    tag: '공감',
-    emoji: '🏃',
-    bg: '#f0f8ff',
-    shopUrl: 'https://e.kakao.com/',
-  },
-  {
-    title: '고양이의 일상 루틴',
-    creator: '이모팁스 컨설팅',
-    date: '2024.09',
-    year: '2024',
-    tag: '귀여움',
-    emoji: '🐱',
-    bg: '#fff0f8',
-    shopUrl: 'https://e.kakao.com/',
-  },
-  {
-    title: '운동하기 싫은 나',
-    creator: '이모팁스 컨설팅',
-    date: '2025.01',
-    year: '2025',
-    tag: '공감',
-    emoji: '💪',
-    bg: '#f0fff4',
-    shopUrl: 'https://e.kakao.com/',
-  },
-  {
-    title: '졸려도 힘내는 토끼',
-    creator: '이모팁스 컨설팅',
-    date: '2025.03',
-    year: '2025',
-    tag: '귀여움',
-    emoji: '🐰',
-    bg: '#fdf0ff',
-    shopUrl: 'https://e.kakao.com/',
-  },
+  { title: '야근하는 직장인 김대리', creator: '홍길동', date: '2024.02', year: '2024', tag: '공감', shopUrl: 'https://e.kakao.com/' },
+  { title: '먹보 햄스터의 일상',     creator: '김이모',  date: '2024.04', year: '2024', tag: '귀여움', shopUrl: '' },
+  { title: '퇴근하고 싶어요',         creator: '박작가',  date: '2024.06', year: '2024', tag: '공감', shopUrl: 'https://e.kakao.com/' },
+  { title: '고양이의 일상 루틴',      creator: '이묘이',  date: '2024.09', year: '2024', tag: '귀여움', shopUrl: '' },
+  { title: '운동하기 싫은 나',        creator: '최운동',  date: '2025.01', year: '2025', tag: '공감', shopUrl: 'https://e.kakao.com/' },
+  { title: '졸려도 힘내는 토끼',      creator: '정토끼',  date: '2025.03', year: '2025', tag: '귀여움', shopUrl: '' },
+  { title: '직장인의 현실 공감',      creator: '강직장',  date: '2025.05', year: '2025', tag: '공감', shopUrl: 'https://e.kakao.com/' },
 ];
 
-// ── 렌더링 ──
 function render(filter) {
   const list = filter === 'all' ? EMOTICONS : EMOTICONS.filter(e => e.year === filter);
-  const grid = document.getElementById('grid');
+  const wrap = document.getElementById('listWrap');
+  if (!list.length) { wrap.innerHTML = '<p style="text-align:center;padding:60px;color:#aaa">해당 연도 작품이 없어요</p>'; return; }
 
-  if (list.length === 0) {
-    grid.innerHTML = '<div class="empty">해당 연도의 작품이 없어요 🥲</div>';
-    return;
-  }
+  const byYear = {};
+  list.forEach(e => { (byYear[e.year] = byYear[e.year] || []).push(e); });
+  const years = Object.keys(byYear).sort((a,b) => b-a);
 
-  grid.innerHTML = list.map(e => `
-    <a class="card" href="${e.shopUrl}" target="_blank" rel="noreferrer">
-      <div class="card-thumb" style="background:${e.bg}">
-        <span>${e.emoji}</span>
-        <span class="card-badge">${e.tag}</span>
-      </div>
-      <div class="card-body">
-        <div class="card-title">${e.title}</div>
-        <div class="card-creator">${e.creator}</div>
-        <div class="card-date">${e.date} 승인</div>
-        <a class="card-shop" href="${e.shopUrl}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-          카카오 이모티콘샵
-        </a>
-      </div>
-    </a>
-  `).join('');
+  let idx = list.length;
+  wrap.innerHTML = years.map(y => {
+    const items = byYear[y];
+    const rows = items.map(e => {
+      const hasLink = !!e.shopUrl;
+      const num = String(idx--).padStart(2, '0');
+      const right = hasLink
+        ? `<div class="banner-right"><span class="banner-shop-badge">출시 →</span></div>`
+        : '';
+      const tag = e.tag ? `<span class="banner-tag">${e.tag}</span>` : '';
+      const inner = `
+        <span class="banner-num">${num}</span>
+        <div class="banner-body">
+          <div class="banner-title">${e.title}</div>
+          <div class="banner-meta">
+            <span class="banner-creator">${e.creator}</span>
+            <span class="banner-date">${e.date} 승인</span>
+            ${tag}
+          </div>
+        </div>
+        ${right}
+        ${hasLink ? '<span class="banner-arrow">→</span>' : ''}
+      `;
+      return hasLink
+        ? `<a class="banner linkable" href="${e.shopUrl}" target="_blank" rel="noreferrer">${inner}</a>`
+        : `<div class="banner">${inner}</div>`;
+    }).join('');
+    return filter === 'all'
+      ? `<div class="year-header"><span class="year-label">${y}</span><span class="year-line"></span></div>${rows}`
+      : rows;
+  }).join('');
+  idx = list.length; // 순번 재계산
+  recalcNumbers(list);
 }
 
-// ── 필터 버튼 ──
+function recalcNumbers(list) {
+  // 순번을 내림차순(최신=큰번호)으로 다시 매김
+  const nums = document.querySelectorAll('.banner-num');
+  nums.forEach((el, i) => { el.textContent = String(list.length - i).padStart(2,'0'); });
+}
+
 function buildFilters() {
-  const years = [...new Set(EMOTICONS.map(e => e.year))].sort((a, b) => b - a);
+  const years = [...new Set(EMOTICONS.map(e => e.year))].sort((a,b) => b-a);
   const row = document.getElementById('filterRow');
   years.forEach(y => {
     const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.dataset.filter = y;
-    btn.textContent = y + '년';
+    btn.className = 'filter-btn'; btn.dataset.filter = y; btn.textContent = y + '년';
     btn.addEventListener('click', () => setFilter(y));
     row.appendChild(btn);
   });
@@ -367,10 +420,10 @@ function setFilter(val) {
   render(val);
 }
 
-// ── 통계 ──
 function updateStats() {
   document.getElementById('totalCount').textContent = EMOTICONS.length;
   document.getElementById('creatorCount').textContent = new Set(EMOTICONS.map(e => e.creator)).size;
+  document.getElementById('liveCount').textContent = EMOTICONS.filter(e => e.shopUrl).length;
 }
 
 buildFilters();
