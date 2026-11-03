@@ -290,7 +290,7 @@ function render(filter) {
     const items = byYear[y];
     const entries = items.map(e => {
       const cls = 'entry' + (e.shopUrl ? ' live' : '');
-      const badge = e.shopUrl ? '<span class="e-live">출시 →</span>' : '';
+      const badge = e.shopUrl ? '<span class="e-live">보러가기</span>' : '';
       const inner = `<span class="e-title">${e.title}</span><span class="e-creator">${e.creator}</span>${badge}`;
       return e.shopUrl
         ? `<a class="${cls}" href="${e.shopUrl}" target="_blank" rel="noreferrer">${inner}</a>`
